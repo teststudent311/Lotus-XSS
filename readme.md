@@ -1,12 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/oPtfbDG.png"><br>
-  ezXSS is an easy way for penetration testers and bug 
-  bounty hunters to test (blind) Cross Site Scripting.<br><br>
-  <img src="https://img.shields.io/github/release/ssl/ezXSS">
-  <img src="https://img.shields.io/github/issues/ssl/ezXSS">
-  <img src="https://img.shields.io/github/forks/ssl/ezXSS">
-  <img src="https://img.shields.io/github/stars/ssl/ezXSS">
-  <img src="https://img.shields.io/github/license/ssl/ezXSS">
+  <img src="https://i.ibb.co/zQzDQgP/lotus-v1-1.png"><br>
 </p>
 
 ## Features
