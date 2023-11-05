@@ -25,7 +25,7 @@
     * Payload URL
     * Screenshot of the page
     * Extract additional defined pages
-* much much more, and, its just ez :-)
+* much much more
 
 ## Required
 * Server or webhosting with PHP 7.1 or up
@@ -33,6 +33,6 @@
 * SSL Certificate to test on https websites (consider Cloudflare or Let's Encrypt for a free SSL)
 
 ## Installation
-ezXSS is ez to install with Apache, NGINX or Docker
+lotusXSS is easy to install with Apache, NGINX or Docker
 
 visit the [wiki](https://github.com/ssl/ezXSS/wiki) for installation instructions.
