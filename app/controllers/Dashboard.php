@@ -60,19 +60,26 @@ class Dashboard extends Controller
 
         // Check LotusXSS updates
         try {
-            $ch = curl_init('https://status.ezxss.com/?v=' . version);
+            $ch = curl_init('https://raw.githubusercontent.com/teststudent311/LotusXSS/master/changelog.txt');
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: LotusXSS']);
             curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-            $release = json_decode(curl_exec($ch), true);
+        
+            $response = curl_exec($ch);
+            $release = json_decode($response, true);
+        
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON');
+            }
         } catch (Exception $e) {
             $release = [['release' => '?', 'body' => 'Error loading', 'zipball_url' => '?']];
         }
+        
         $this->view->renderData('repoVersion', $release[0]['release'] ?? '?');
         $this->view->renderData('repoBody', $release[0]['body'] ?? 'Error loading');
         $this->view->renderData('repoUrl', $release[0]['zipball_url'] ?? '?');
-
+        
         return $this->showContent();
     }
 }
