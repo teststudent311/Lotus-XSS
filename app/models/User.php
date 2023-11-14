@@ -254,7 +254,7 @@ class User_model extends Model
             throw new Exception("Password not strong enough");
         }
 
-        $database->prepare('INSERT INTO `users` (`username`, `password`, `rank`, `secret`, `notepad`) VALUES (:username, :password, :rank, "", "Welcome to ezXSS");');
+        $database->prepare('INSERT INTO `users` (`username`, `password`, `rank`, `secret`, `notepad`) VALUES (:username, :password, :rank, "", "Welcome to LotusXSS");');
         $database->bindValue(':username', $username);
         $database->bindValue(':password', password_hash($password, PASSWORD_BCRYPT, ['cost' => 14]));
         $database->bindValue(':rank', $rank);

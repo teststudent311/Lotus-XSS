@@ -15,7 +15,7 @@ class Update extends Controller
         // Make sure the platform is not already up-to-date
         $version = $this->model('Setting')->get('version');
         if ($version === version) {
-            throw new Exception('ezXSS is already up-to-date');
+            throw new Exception('LotusXSS is already up-to-date');
         }
 
         if ($this->isPOST()) {
@@ -28,7 +28,7 @@ class Update extends Controller
                         if(version !== '4.0') {
                             throw new Exception('Please first update to 4.0 before migrating 3.x to 4.x');
                         }
-                        $this->ezXSS3migrate();
+                        $this->LotusXSS3migrate();
                     } else {
                         throw new Exception('Please first update to 3.10 before migrating to 4.x');
                     }
@@ -36,7 +36,7 @@ class Update extends Controller
 
                 if ($version == '4.0' && version === '4.1') {
                     // Update the database tables and rows
-                    $sql = file_get_contents(__DIR__ . '/../../ezXSS4.1.sql');
+                    $sql = file_get_contents(__DIR__ . '/../../LotusXSS4.1.sql');
                     $database = Database::openConnection();
                     $database->exec($sql);
 
@@ -56,18 +56,18 @@ class Update extends Controller
     }
 
     /**
-     * Migrate ezXSS 3 database to ezXSS 4
+     * Migrate LotusXSS 3 database to LotusXSS 4
      * 
      * @return void
      */
-    private function ezXSS3migrate()
+    private function LotusXSS3migrate()
     {
         // Store old data
         $password = $this->model('Setting')->get('password');
         $notepad = $this->model('Setting')->get('notepad');
 
         // Update the database tables and rows
-        $sql = file_get_contents(__DIR__ . '/../../ezXSS3migrate.sql');
+        $sql = file_get_contents(__DIR__ . '/../../LotusXSS3migrate.sql');
         $database = Database::openConnection();
         $database->exec($sql);
         $database->exec('ALTER DATABASE `' . DB_NAME . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;');
@@ -81,7 +81,7 @@ class Update extends Controller
         $this->model('Payload')->add($user['id'], host);
 
         // Add note
-        $this->model('Setting')->set('notepad', "Great! U have updated to ezXSS 4!\n\nA lot of things have changed, and some settings like your alerts and payloads needs to be re-done in other to make everything work correct again.\n\nPlease visit the Github wiki for help on github.com/ssl/ezXSS/wiki\n\n" . $notepad);
+        $this->model('Setting')->set('notepad', "Great! U have updated to LotusXSS 4!\n\nA lot of things have changed, and some settings like your alerts and payloads needs to be re-done in other to make everything work correct again.\n\nPlease visit the Github wiki for help on github.com/ssl/ezXSS/wiki\n\n" . $notepad);
 
         // Update all oldskool 'collected pages' and NULL payloads
         $reports = $this->model('Report')->getAllInvalid();

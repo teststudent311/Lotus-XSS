@@ -58,12 +58,12 @@ class Dashboard extends Controller
         }
         $this->view->renderData('notepad', $this->model('Setting')->get('notepad'));
 
-        // Check ezXSS updates
+        // Check LotusXSS updates
         try {
             $ch = curl_init('https://status.ezxss.com/?v=' . version);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: ezXSS']);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: LotusXSS']);
             curl_setopt($ch, CURLOPT_TIMEOUT, 3);
             $release = json_decode(curl_exec($ch), true);
         } catch (Exception $e) {

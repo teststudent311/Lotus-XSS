@@ -96,14 +96,14 @@ class Payloads extends Controller
 
         // Check method
         if (!$this->isPOST()) {
-            return 'github.com/ssl/ezXSS';
+            return 'github.com/teststudent311/LotusXSS';
         }
 
         // Decode the JSON data
         $data = json_decode(file_get_contents('php://input'), false);
 
         if(empty($data) || !is_object($data)) {
-            return 'github.com/ssl/ezXSS';
+            return 'github.com/teststudent311/LotusXSS';
         }
 
         // Set a default value for the screenshot
@@ -131,12 +131,12 @@ class Payloads extends Controller
         // Check for blacklisted domains
         foreach ($blacklistDomains as $blockedDomain) {
             if ($data->origin == $blockedDomain) {
-                return 'github.com/ssl/ezXSS';
+                return 'github.com/teststudent311/LotusXSS';
             }
             if (strpos($blockedDomain, '*') !== false) {
                 $blockedDomain = str_replace('*', '(.*)', $blockedDomain);
                 if (preg_match('/^' . $blockedDomain . '$/', $data->origin)) {
-                    return 'github.com/ssl/ezXSS';
+                    return 'github.com/teststudent311/LotusXSS';
                 }
             }
         }
@@ -156,7 +156,7 @@ class Payloads extends Controller
                 }
             }
             if (!$foundWhitelist) {
-                return 'github.com/ssl/ezXSS';
+                return 'github.com/teststudent311/LotusXSS';
             }
         }
 
@@ -173,7 +173,7 @@ class Payloads extends Controller
             if ($searchId !== false) {
                 if ($this->model('Setting')->get('filter-save') == 0 && $this->model('Setting')->get('filter-alert') == 0) {
                     echo 'no: ';
-                    return 'github.com/ssl/ezXSS';
+                    return 'github.com/teststudent311/LotusXSS';
                 } else {
                     echo 'yes: ' . $searchId;
                     $doubleReport = $searchId;
@@ -243,7 +243,7 @@ class Payloads extends Controller
             }
         }
 
-        return 'github.com/ssl/ezXSS';
+        return 'github.com/teststudent311/LotusXSS';
     }
 
     /**
@@ -456,12 +456,12 @@ class Payloads extends Controller
         $alertTemplate = $this->view->getAlert('mail.html');
         $alertTemplate = $this->view->renderAlertData($alertTemplate, $escapedData);
 
-        $headers[] = 'From: ezXSS';
+        $headers[] = 'From: LotusXSS';
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-type: text/html; charset=iso-8859-1';
         mail(
             $email,
-            '[ezXSS] XSS on ' . $data->uri,
+            '[LotusXSS] XSS on ' . $data->uri,
             $alertTemplate,
             implode("\r\n", $headers)
         );

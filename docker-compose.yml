@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  ezxssdb:
+  lotusxssdb:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -11,8 +11,8 @@ services:
       - MYSQL_USER=${dbUser}
       - MYSQL_PASSWORD=${dbPassword}
     volumes:
-      - "./ezxssdb:/var/lib/mysql"
-  ezxss:
+      - "./lotusxssdb:/var/lib/mysql"
+  lotusxss:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -25,4 +25,4 @@ services:
       - .:/var/www/html
     restart: always
     depends_on:
-      - ezxssdb
+      - lotusxssdb

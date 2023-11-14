@@ -9,10 +9,10 @@ import base64
 from dotenv import load_dotenv
 
 """
-The ezXSS persistent proxy is a reverse proxy that can only be used in combination with a ezXSS installation.
-After starting the proxy, users can insert the domain and port used into a persistent session in the ezXSS management panel.
+The LotusXSS persistent proxy is a reverse proxy that can only be used in combination with a LotusXSS installation.
+After starting the proxy, users can insert the domain and port used into a persistent session in the LotusXSS management panel.
 This feature enables easy and secure testing of persistent XSS vulnerabilities on a target website.
-For additional information and support, please visit the ezXSS wiki on GitHub at https://github.com/ssl/ezXSS/wiki
+For additional information and support, please visit the LotusXSS wiki on GitHub at https://github.com/ssl/ezXSS/wiki
 """
 
 print("""
@@ -21,7 +21,7 @@ print("""
    .::    .:::: .::  .:: .::    .::       .::      
  .:   .::      .::     .::        .::       .::    
 .::::: .::   .::     .:: .::         .::       .::     ezProxy v1.0
-.:          .::     .::   .::  .::    .::.::    .::    github.com/ssl/ezXSS
+.:          .::     .::   .::  .::    .::.::    .::    github.com/teststudent311/LotusXSS
   .::::   .::::::::.::      .::  .:: ::    .:: ::
 """)
 
@@ -76,10 +76,10 @@ async def echo(websocket, path):
                 print(f"[!] Origin: {data['origin']}")
 
                 if data['pass'] == True:
-                    print(f"[>] Accessible on http://{client_id}.ezxss and http://{data['origin']}")
+                    print(f"[>] Accessible on http://{client_id}.lotusxss and http://{data['origin']}")
                     passed_origins[data['origin']] = client_id
                 else:
-                    print(f'[>] Accessible on http://{client_id}.ezxss')
+                    print(f'[>] Accessible on http://{client_id}.lotusxss')
             else:
                 data = json.loads(message)
                 client_id = data['clientid'].lower()
@@ -117,7 +117,7 @@ async def handle_connection(reader, writer):
         status_code, content_type = 200, "text/html; encoding=utf8"
         
         do_proxy = False
-        response_body = 'You can not browse the internet while on the ezXSS proxy.'.encode('utf-8')
+        response_body = 'You can not browse the internet while on the LotusXSS proxy.'.encode('utf-8')
 
         # Check for the Authorization header
         if use_login:
@@ -129,11 +129,11 @@ async def handle_connection(reader, writer):
                 writer.write(response_body)
                 await writer.drain()
 
-        if domain.endswith('.ezxss'):
+        if domain.endswith('.lotusxss'):
             client_id = domain[:-6]
             do_proxy = True
         
-        if not domain.endswith('.ezxss'):
+        if not domain.endswith('.lotusxss'):
             if domain in passed_origins:
                 client_id = passed_origins[domain]
                 do_proxy = True

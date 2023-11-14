@@ -112,7 +112,7 @@ class Persistent extends Controller
 
                     $passOrigin = $this->getPostValue('passorigin') !== null ? '1' : '0';
                     $this->model('Console')->add($clientId, $origin, "ez_soc('$ipport', $passOrigin)");
-                    throw new Exception("Proxy started on $ipport is accessible on http://$clientId.ezxss" . ($passOrigin === '1' ? " and http://$origin" : ''));
+                    throw new Exception("Proxy started on $ipport is accessible on http://$clientId.lotusxss" . ($passOrigin === '1' ? " and http://$origin" : ''));
                 }
 
             } catch (Exception $e) {

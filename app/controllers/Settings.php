@@ -250,7 +250,7 @@ class Settings extends Controller
     }
 
     /**
-     * Kills the ezXSS platform
+     * Kills the LotusXSS platform
      * 
      * @param string $password
      * @return string
@@ -258,7 +258,7 @@ class Settings extends Controller
     private function killSwitch($password)
     {
         $this->model('Setting')->set("killswitch", $password);
-        $this->view->renderErrorPage("ezXSS is now killed with password $password");
+        $this->view->renderErrorPage("LotusXSS is now killed with password $password");
     }
 
     /**
