@@ -36,21 +36,21 @@
 On Kali Linux 2023.3
 
 ## Installation
-LotusXSS is easy to install with Apache, NGINX or Docker
+LotusXSS is easy to install with Apache/NGINX/Docker
 
 ### Install with Apache2
 - Download install_ap2.sh
-- 
+- Make executable: chmod +x install_ap2.sh
+- Execute: ./install_ap2.sh
 
 ### Install with Nginx
-- Download install_ap2.sh
-- 
+- Download install_ng.sh
+- Make executable: chmod +x install_ng.sh
+- Execute: ./install_ng.sh
 
 ### Install with Docker
-
 - Clone the repository and put the files in the document root
 - Setup your config (e.g. /etc/nginx/sites-enabled/default) like the example: nginx-rewrite.conf
 - Rename .env.example to .env
 - Create an empty database and provide your database information in .env
 - Visit /manage/install in your browser and setup your account
-- Done! That was ez right?
