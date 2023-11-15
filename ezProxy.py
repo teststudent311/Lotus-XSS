@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 The LotusXSS persistent proxy is a reverse proxy that can only be used in combination with a LotusXSS installation.
 After starting the proxy, users can insert the domain and port used into a persistent session in the LotusXSS management panel.
 This feature enables easy and secure testing of persistent XSS vulnerabilities on a target website.
-For additional information and support, please visit the LotusXSS wiki on GitHub at https://github.com/ssl/ezXSS/wiki
+For additional information and support, please visit the LotusXSS wiki on GitHub at https://github.com/teststudent311/LotusXSS/wiki
 """
 
 print("""
