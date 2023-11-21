@@ -24,7 +24,8 @@
 ## 🧪 Tested Environments
 
 - Kali Linux 2023.3
-- Ubuntu 22.04 & 23.10
+- Ubuntu 22.04 
+- Ubuntu 23.10
 - Mint 21.2
 - Debian 12
 
