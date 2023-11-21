@@ -1,72 +1,56 @@
 # LotusXSS
 
-<p align="center">
-  <img src="https://i.ibb.co/GsC7ddZ/077f441c-b58d-4b9c-9d13-72281930d24e.jpg"><br>
-</p>
+<div align="center">
+  <img src="https://i.ibb.co/GsC7ddZ/077f441c-b58d-4b9c-9d13-72281930d24e.jpg" alt="LotusXSS">
+</div>
 
-## Features
+## 🌟 Features
 
-- Easy to use dashboard with settings, statistics, payloads, view/share/search reports.
-- Persistent XSS sessions with reverse proxy as long as the browser is active.
-- Unlimited users with permissions to personal payloads & their reports.
-- Instant alerts via mail, Telegram, Slack, Discord, or custom callback URL.
-- Custom JavaScript payloads.
-- Custom payload links to distinguish insert points.
-- Extract additional pages, block, whitelist, and other filters.
-- Secure your login with Two-factor authentication.
-- The following information can be collected on a vulnerable page:
-    - The URL of the page.
-    - IP Address.
-    - Any page referer (or share referer).
-    - The User-Agent.
-    - All Non-HTTP-Only Cookies.
-    - All Locale Storage.
-    - All Session Storage.
-    - Full HTML DOM source of the page.
-    - Page origin.
-    - Time of execution.
-    - Payload URL.
-    - Screenshot of the page.
-    - Extract additional defined pages.
-- More.
+- **User-Friendly Dashboard:** Settings, statistics, payloads, and report management.
+- **Persistent XSS Sessions:** Active as long as the browser is running, with reverse proxy support.
+- **Access Control:** Unlimited user support with custom permissions for payloads and reports.
+- **Real-Time Alerts:** Receive notifications via email, Telegram, Slack, Discord, or custom callbacks.
+- **Customization:** Tailor-made JavaScript payloads and unique payload links.
+- **Advanced Filtering:** Options to extract additional pages, apply block/whitelist filters.
+- **Two-Factor Authentication:** Enhance security for user logins.
+- **Comprehensive Data Collection:** Including URL, IP address, referer, User-Agent, cookies, storage data, full HTML DOM, page origin, execution time, payload URL, page screenshots, and more.
 
-## Required
+## 📋 Requirements
 
-- Server or web hosting with PHP 7.1 or up.
-- Domain name (consider a short one or check out [shortboost](https://github.com/ssl/shortboost)).
-- SSL Certificate to test on HTTPS websites (You can use Cloudflare or Let's Encrypt for a free SSL).
+- **Server Compatibility:** PHP 7.1 or higher.
+- **Domain Name:** Short domain recommended ([shortboost](https://github.com/ssl/shortboost)).
+- **SSL Certificate:** For HTTPS websites (Cloudflare or Let's Encrypt for free SSL).
 
-## Tested
+## 🧪 Tested Environments
 
-On Kali Linux 2023.3
-On Ubuntu 22.04
-On Ubuntu 23.10
-On Mint 21.2
+- Kali Linux 2023.3
+- Ubuntu 22.04 & 23.10
+- Mint 21.2
 
-## Installation
+## ⚙️ Installation
 
-### Install with Apache2
+### Apache2 Setup
 
-1. Download `install_ap2.sh`.
-2. Make executable: `chmod +x install_ap2.sh`.
-3. Execute: `./install_ap2.sh`.
+1. **Download:** `install_ap2.sh`.
+2. **Prepare:** `chmod +x install_ap2.sh`.
+3. **Execute:** `./install_ap2.sh`.
 
-### Install with Nginx
+### Nginx Setup
 
-1. Download `install_ng.sh`.
-2. Make executable: `chmod +x install_ng.sh`.
-3. Execute: `./install_ng.sh`.
+1. **Download:** `install_ng.sh`.
+2. **Prepare:** `chmod +x install_ng.sh`.
+3. **Execute:** `./install_ng.sh`.
 
-### Install with Docker
+### Docker Installation
 
-**Auto:**
-1. Download `install_dk.sh`.
-2. Make executable: `chmod +x install_dk.sh`.
-3. Execute: `./install_dk.sh`.
+**Automatic:**
+1. **Download:** `install_dk.sh`.
+2. **Prepare:** `chmod +x install_dk.sh`.
+3. **Execute:** `./install_dk.sh`.
 
 **Manual:**
-- Clone the repository and put the files in the document root (/var/www/html/).
-- Rename `.env.example` to `.env` and update it with a secure randomly generated password.
-- If you want mail alerts, update SMTP info in `msmtprc`.
+- Clone the repository into `/var/www/html/`.
+- Rename `.env.example` to `.env` and set a secure password.
+- Update `msmtprc` for email alerts.
 - Run `docker-compose build && docker-compose up -d`.
-- Visit `/manage/install` in your browser and setup your account.
+- Initialize account setup at `/manage/install`.
