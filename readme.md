@@ -9,11 +9,11 @@
 - Easy to use dashboard with settings, statistics, payloads, view/share/search reports.
 - Persistent XSS sessions with reverse proxy as long as the browser is active.
 - Unlimited users with permissions to personal payloads & their reports.
-- Instant alerts via mail, Telegram, Slack, Discord or custom callback URL.
-- Custom javascript payloads.
+- Instant alerts via mail, Telegram, Slack, Discord, or custom callback URL.
+- Custom JavaScript payloads.
 - Custom payload links to distinguish insert points.
-- Extract additional pages, block, whitelist and other filters.
-- Secure your login with Two-factor (2FA).
+- Extract additional pages, block, whitelist, and other filters.
+- Secure your login with Two-factor authentication.
 - The following information can be collected on a vulnerable page:
     - The URL of the page.
     - IP Address.
@@ -28,17 +28,20 @@
     - Payload URL.
     - Screenshot of the page.
     - Extract additional defined pages.
-- much much more.
+- More.
 
 ## Required
 
-- Server or webhosting with PHP 7.1 or up.
+- Server or web hosting with PHP 7.1 or up.
 - Domain name (consider a short one or check out [shortboost](https://github.com/ssl/shortboost)).
-- SSL Certificate to test on https websites (consider Cloudflare or Let's Encrypt for a free SSL).
+- SSL Certificate to test on HTTPS websites (You can use Cloudflare or Let's Encrypt for a free SSL).
 
 ## Tested
 
-On Kali Linux 2023.3.
+On Kali Linux 2023.3
+On Ubuntu 22.04
+On Ubuntu 23.10
+On Mint 21.2
 
 ## Installation
 
@@ -56,8 +59,14 @@ On Kali Linux 2023.3.
 
 ### Install with Docker
 
-- Clone the repository and put the files in the document root.
-- Setup your config (e.g., `/etc/nginx/sites-enabled/default`) like the example: `nginx-rewrite.conf`.
-- Rename `.env.example` to `.env`.
-- Create an empty database and provide your database information in `.env`.
+**Auto:**
+1. Download `install_dk.sh`.
+2. Make executable: `chmod +x install_dk.sh`.
+3. Execute: `./install_dk.sh`.
+
+**Manual:**
+- Clone the repository and put the files in the document root (/var/www/html/).
+- Rename `.env.example` to `.env` and update it with a secure randomly generated password.
+- If you want mail alerts, update SMTP info in `msmtprc`.
+- Run `docker-compose build && docker-compose up -d`.
 - Visit `/manage/install` in your browser and setup your account.

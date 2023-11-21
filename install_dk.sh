@@ -26,7 +26,7 @@ else
 fi
 
 sudo apt-get update -y && sudo apt-get dist-upgrade -y
-sudo apt-get install python3 docker.io docker-compose php php-mysql mariadb-server curl php-curl php-fpm -y
+sudo apt-get install git python3 docker.io docker-compose php php-mysql mariadb-server curl php-curl php-fpm -y
 
 sudo systemctl enable mariadb
 sudo systemctl start mariadb

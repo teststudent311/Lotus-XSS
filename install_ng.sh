@@ -34,7 +34,7 @@ else
 fi
 
 sudo apt-get update -y && sudo apt-get dist-upgrade -y
-sudo apt-get install nginx php php-mysql mariadb-server curl php-curl php-fpm -y
+sudo apt-get install git nginx php php-mysql mariadb-server curl php-curl php-fpm -y
 
 PHP_VERSION=$(php -v | head -n 1 | cut -d ' ' -f 2 | cut -d '.' -f 1,2)
 PHP_FPM_VERSION="php${PHP_VERSION}-fpm"
