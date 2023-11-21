@@ -26,8 +26,11 @@
 - Kali Linux 2023.3
 - Ubuntu 22.04 & 23.10
 - Mint 21.2
+- Debian 12
 
 ## ⚙️ Installation
+
+**Note:** The installation scripts are compatible with Linux distributions that use the `apt` package manager and `systemd` for system and service management.
 
 ### Apache2 Setup
 
