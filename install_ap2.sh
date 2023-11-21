@@ -5,9 +5,9 @@ read -s MYSQL_USER_PASSWORD
 MYSQL_USER_PASSWORD=${MYSQL_USER_PASSWORD:-1234}
 echo ""
 
-echo "Enter the database host name (press Enter for default 'lotusxssdb'):"
+echo "Enter the database host name (press Enter for default 'localhost'):"
 read DB_HOST
-DB_HOST=${DB_HOST:-lotusxssdb}
+DB_HOST=${DB_HOST:-localhost}
 
 sudo apt-get update -y && sudo apt-get dist-upgrade -y
 sudo apt-get install apache2 php php-mysql mariadb-server curl php-curl php-fpm -y
