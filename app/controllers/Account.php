@@ -32,7 +32,7 @@ class Account extends Controller
 
                 // Check if posted data is changing MFA
                 if ($this->getPostValue('mfa') !== null) {
-                    $secret = $this->getPostValue('secret');
+                    $secret = $this->getPostValue('secret') ?? '';
                     $code = $this->getPostValue('code');
                     $this->mfaSettings($secret, $code);
                 }
@@ -104,7 +104,12 @@ class Account extends Controller
                 } else {
                     $this->session->createSession($user);
                     $this->log('Succesfully logged in');
-                    redirect('dashboard/index');
+
+                    if ($this->session->data('redirect') !== '') {
+                        redirect($this->session->data('redirect'));
+                    } else {
+                        redirect('dashboard/index');
+                    }
                 }
             } catch (Exception $e) {
                 $this->view->renderMessage($e->getMessage());
@@ -137,13 +142,18 @@ class Account extends Controller
                 $code = $this->getPostValue('code');
                 $user = $this->model('User')->getById($this->session->data('id'));
 
-                if (getAuthCode($user['secret']) != $code) {
+                if (getAuthCode($user['secret']) !== $code) {
                     throw new Exception('Code is incorrect');
                 }
 
                 $this->session->createSession($user);
                 $this->log('Succesfully logged in with MFA');
-                redirect('dashboard/index');
+
+                if ($this->session->data('redirect') !== '') {
+                    redirect($this->session->data('redirect'));
+                } else {
+                    redirect('dashboard/index');
+                }
             } catch (Exception $e) {
                 $this->view->renderMessage($e->getMessage());
             }
@@ -167,8 +177,8 @@ class Account extends Controller
 
         if ($this->isPOST()) {
             try {
-                if(!signupEnabled) {
-                    throw new Exception("Signup is disabled");
+                if (!signupEnabled) {
+                    throw new Exception('Signup is disabled');
                 }
 
                 $this->validateCsrfToken();
@@ -178,19 +188,19 @@ class Account extends Controller
                 $domain = $this->getPostValue('domain');
 
                 if ($domain === null || preg_match('/[^A-Za-z0-9]/', $domain)) {
-                    throw new Exception("Invalid characters in the domain. Use a-Z0-9");
+                    throw new Exception('Invalid characters in the domain. Use a-Z0-9');
                 }
 
                 if (!$this->model('Payload')->isAvailable("{$domain}." . host)) {
                     throw new Exception('Payload domain is already in use');
                 }
 
-                if (strlen($domain) < 1 || strlen($username) > 25) {
-                    throw new Exception("Domain needs to be between 1-25 long");
+                if (strlen($domain) < 1 || strlen($domain) > 25) {
+                    throw new Exception('Domain needs to be between 1-25 long');
                 }
 
                 if (!preg_match('/^(?=.{1,255}$)[a-z0-9][a-z0-9-]{0,62}(?<!-)(\.[a-z0-9][a-z0-9-]{0,62}(?<!-))*\.?$/i', host)) {
-                    throw new Exception("Host is not a valid hostname");
+                    throw new Exception('Host is not a valid hostname');
                 }
 
                 $user = $this->model('User')->create($username, $password, 1);
@@ -246,7 +256,7 @@ class Account extends Controller
         $user = $this->model('User')->getById($this->session->data('id'));
         $secretCode = $user['secret'];
 
-        if (strlen($secret) == 16) {
+        if (strlen($secret) === 16) {
             if (strlen($secretCode) === 16) {
                 throw new Exception('2FA settings are already enabled');
             }
@@ -255,7 +265,7 @@ class Account extends Controller
                 throw new Exception('Secret length needs to be 16 characters long');
             }
 
-            if (getAuthCode($secret) != $code) {
+            if (getAuthCode($secret) !== $code) {
                 throw new Exception('Code is incorrect.');
             }
         } else {
@@ -263,7 +273,7 @@ class Account extends Controller
                 throw new Exception('2FA settings are already disabled');
             }
 
-            if (getAuthCode($secretCode) != $code) {
+            if (getAuthCode($secretCode) !== $code) {
                 throw new Exception('Code is incorrect');
             }
             $secret = '';

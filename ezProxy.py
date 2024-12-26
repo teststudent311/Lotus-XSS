@@ -31,7 +31,7 @@ load_dotenv()
 host = os.getenv("prHost")
 websockets_port = os.getenv("prWebPort")
 proxy_port = os.getenv("prProxyPort")
-use_login = True if os.getenv("prUseLogin") == '1' else False
+use_login = True if os.getenv("prUseLogin") == '1' or os.getenv("prUseLogin") == 'true' else False
 username = os.getenv("prUser")
 password = os.getenv("prPassword")
 cert_file = os.getenv("prCertFile")
@@ -141,7 +141,7 @@ async def handle_connection(reader, writer):
         if do_proxy:
             full_uri = parsed_uri.path + ('?' + parsed_uri.query if parsed_uri.query else '')
             if client_id in connected_clients:
-                message = json.dumps({"do": request_method, "request_uri": full_uri, "postData": request_body})
+                message = json.dumps({"method": request_method, "request_uri": full_uri, "postData": request_body})
                 await connected_clients[client_id].send(message)
 
                 client_response = None

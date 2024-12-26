@@ -9,7 +9,8 @@
                     <div class="view-header">
                         <div class="header-title">
                             <h3 class="m-b-xs">Users</h3>
-                            <small>The users page lets you create and edit user accounts within ezXSS. Use it to manage user permissions and payloads.</small>
+                            <small>The users page lets you create and edit user accounts within ezXSS. Use it to manage
+                                user permissions and payloads.</small>
                         </div>
                     </div>
                     <hr>
@@ -26,7 +27,7 @@
                         <div class="panel-body">
                             <div class="table-responsive">
 
-                                <table class="table" style="white-space: nowrap;">
+                                <table id="users" class="table">
                                     <thead>
                                         <tr>
                                             <th style="width:6%">ID</th>
@@ -37,17 +38,8 @@
                                             <th style="width:10%">Delete</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="reports-list">
-                                        {%foreach user}
-                                        <tr>
-                                            <td scope="row"><b>{user->id}</b></td>
-                                            <td>{user->username}</td>
-                                            <td>{user->rank}</td>
-                                            <td>{user->payloads}</td>
-                                            <td><a href="/manage/users/edit/{user->id}">Edit</a></td>
-                                            <td><a href="/manage/users/delete/{user->id}">Delete</a></td>
-                                        </tr>
-                                        {%/foreach}
+                                    <tbody>
+
                                     </tbody>
                                 </table>
 
@@ -65,15 +57,17 @@
 
                                 <div class="form-group">
                                     <label class="control-label" for="username">Username</label>
-                                    <input class="form-control" id="username" name="username" type="text">
+                                    <input class="form-control" id="username" name="username" type="text"
+                                        autocomplete="off">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label" for="password">Password</label>
                                     <div class="input-group">
-                                        <input class="form-control" id="password" name="password" type="text">
-                                        <span class="input-group-addon"><a class="generate-password"
-                                                style="cursor:pointer">Generate</a></span>
+                                        <input class="form-control" id="password" name="password" type="text"
+                                            autocomplete="off">
+                                        <span class="input-group-addon"><a
+                                                class="generate-password pointer">Generate</a></span>
                                     </div>
                                 </div>
 
@@ -95,3 +89,7 @@
         </div>
     </section>
 </div>
+
+<script src="/assets/js/dataTables/jquery.dataTables.js?v={version[]}"></script>
+<script src="/assets/js/dataTables/bootstrap.dataTables.js?v={version[]}"></script>
+<script src="/assets/js/dataTables/init.js?v={version[]}"></script>

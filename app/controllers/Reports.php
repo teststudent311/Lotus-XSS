@@ -11,8 +11,6 @@ class Reports extends Controller
 
     /**
      * Redirects to all reports
-     * 
-     * @return never
      */
     public function index()
     {
@@ -52,9 +50,12 @@ class Reports extends Controller
         }
 
         // Render all rows
-        $screenshot = !empty($report['screenshot']) ? '<img src="/assets/img/report-' . e($report['screenshot']) . '.png" style="max-width:100%">' : '';
-        $this->view->renderData('screenshot', $screenshot, true);
+        if(!empty($report['screenshot'] ?? '')) {
+            $screenshot = strlen($report['screenshot']) === 52 ? '<img class="report-img" src="/assets/img/report-' . e($report['screenshot']) . '.png">' : '<img class="report-img" src="data:image/png;base64,' . e($report['screenshot']) . '">';
+        }
+        $this->view->renderData('screenshot', $screenshot ?? '', true);
         $this->view->renderData('time', date('F j, Y, g:i a', $report['time']));
+        $this->view->renderData('browser', $this->parseUserAgent($report['user-agent']), true);
 
         foreach ($this->rows as $value) {
             $this->view->renderData($value, $report[$value]);
@@ -77,9 +78,10 @@ class Reports extends Controller
         $report = $this->model('Report')->getByShareId($id);
 
         // Render all rows
-        $screenshot = !empty($report['screenshot']) ? '<img src="/assets/img/report-' . e($report['screenshot']) . '.png">' : '';
+        $screenshot = !empty($report['screenshot']) ? '<img src="data:image/png;base64,' . e($report['screenshot']) . '">' : '';
         $this->view->renderData('screenshot', $screenshot, true);
         $this->view->renderData('time', date('F j, Y, g:i a', $report['time']));
+        $this->view->renderData('browser', $this->parseUserAgent($report['user-agent']), true);
 
         foreach ($this->rows as $value) {
             $this->view->renderData($value, $report[$value]);
@@ -112,11 +114,11 @@ class Reports extends Controller
         // Retrieve and render all payloads of user for listing
         $payloads = [];
         foreach ($payloadList as $val) {
-            $name = !$val ? 'All reports' : $this->model('Payload')->getById($val)['payload'];
+            $name = !$val ? 'All payloads' : $this->model('Payload')->getById($val)['payload'];
             $payloads[] = ['id' => $val, 'name' => ucfirst($name), 'selected' => $val == $id ? 'selected' : ''];
         }
         $this->view->renderDataset('payload', $payloads);
-        
+
         return $this->showContent();
     }
 

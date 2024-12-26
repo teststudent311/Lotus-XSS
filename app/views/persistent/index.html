@@ -9,7 +9,8 @@
                     <div class="view-header">
                         <div class="header-title">
                             <h3 class="m-b-xs">All sessions</h3>
-                            <small>The sessions page allows you to view, search and delete all of your payload's persistent sessions. Use it to track online and offline sessions.
+                            <small>The sessions page allows you to view, search and delete all of your payload's
+                                persistent sessions. Use it to track online and offline sessions.
                             </small>
                         </div>
                     </div>
@@ -32,50 +33,29 @@
 
                 <div class="col-lg-12">
                     <div class="panel panel-filled">
-                        <div class="panel-heading">Information <span id="last" style="float:right">0s ago</span></div>
+                        <div class="panel-heading">Information <span class="last-time" id="last">0s ago</span></div>
                         <div class="panel-body">
-                            {%if hasSessions}
                             <div class="table-responsive">
-
-                                <table id="persistent" class="table" style="white-space: nowrap;width:100%;">
+                                <table id="persistent" class="table">
                                     <thead>
                                         <tr>
-                                            <th style="width:120px">
+                                            <th class="persistent-table-id">
                                                 <label class="reports-checkbox-label">
                                                     <input id="select-all" name="select-all" type="checkbox">
-                                                    <span class="reports-checkbox-custom rectangular"
-                                                        style="top:4px!important"></span>
+                                                    <span class="reports-checkbox-custom rectangular"></span>
                                                 </label>
                                                 Client ID
                                             </th>
                                             <th>Browser</th>
                                             <th>IP</th>
-                                            <th>Current page</th>
+                                            <th>Last page</th>
                                             <th>Payload</th>
                                             <th>Requests</th>
                                             <th>Last online</th>
                                         </tr>
                                     </thead>
                                     <tbody id="reports-list">
-                                        {%foreach session}
-                                        <tr>
-                                            <td scope=row style="width:50px;border-color:#5b6187">
-                                                <label class="reports-checkbox-label" for="chk_{session->id}">
-                                                    <input class="chkbox" type="checkbox" name="selected"
-                                                        value="{session->id}" id="chk_{session->id}"
-                                                        url="/manage/persistent/session/{session->clientid}~{session->origin}">
-                                                    <span class="reports-checkbox-custom rectangular"></span>
-                                                </label>
-                                                <a href="/manage/persistent/session/{session->clientid}~{session->origin}">{session->clientid}</a>
-                                            </td>
-                                            <td>{session->browser}</td>
-                                            <td>{session->ip}</td>
-                                            <td>{session->shorturi}</td>
-                                            <td>{session->payload}</td>
-                                            <td>{session->requests}</td>
-                                            <td data-sort="{session->time}">{session->last}</td>
-                                        </tr>
-                                        {%/foreach}
+                                        
                                     </tbody>
                                 </table>
 
@@ -83,14 +63,11 @@
                                     <div class="dataTables_paginate paging_simple_numbers">
                                         with selected:
                                         <a class="btn" data-toggle="modal" data-target="#executeModal">Execute</a>
+                                        <button class="btn kill-selected">Kill persistent</button>
+                                        <button class="btn persistent-delete-selected">Delete</button>
                                     </div><br>
                                 </div>
                             </div>
-                            {%/if}
-
-                            {%!if hasSessions}
-                            <p>There are no sessions yet for this payload.</p>
-                            {%/!if}
                         </div>
                     </div>
                 </div>
@@ -108,8 +85,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label" for="domain">Command</label>
-                        <input class="form-control" name="command" id="command" type="text" placeholder="console.log(1);">
+                        <label class="control-label" for="command">Command</label>
+                        <input class="form-control" name="command" id="command" type="text"
+                            placeholder="console.log(1);">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -118,10 +96,8 @@
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- Reports JS -->
-<script src="/assets/js/dataTables/jquery.dataTables.js"></script>
-<script src="/assets/js/dataTables/bootstrap.dataTables.js"></script>
-<script src="/assets/js/dataTables/init.js"></script>
+<script src="/assets/js/dataTables/jquery.dataTables.js?v={version[]}"></script>
+<script src="/assets/js/dataTables/bootstrap.dataTables.js?v={version[]}"></script>
+<script src="/assets/js/dataTables/init.js?v={version[]}"></script>

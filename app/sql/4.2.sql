@@ -64,20 +64,32 @@ INSERT INTO `payloads` (`id`, `payload`, `user_id`, `pages`, `blacklist`, `white
 CREATE TABLE `reports` (
   `id` int(11) NOT NULL,
   `shareid` varchar(50) NOT NULL,
-  `cookies` mediumtext,
-  `dom` longtext,
   `origin` varchar(500) DEFAULT NULL,
   `referer` varchar(1000) DEFAULT NULL,
-  `payload` varchar(500) DEFAULT NULL,
+  `payload` varchar(255) DEFAULT NULL,
   `uri` varchar(1000) DEFAULT NULL,
   `user-agent` varchar(500) DEFAULT NULL,
   `ip` varchar(50) DEFAULT NULL,
   `time` int(11) DEFAULT NULL,
-  `archive` int(11) DEFAULT '0',
-  `screenshot` longtext,
-  `localstorage` longtext,
-  `sessionstorage` longtext
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+  `cookies` mediumtext,
+  `archive` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reports_data`
+--
+
+CREATE TABLE `reports_data` (
+    `id` INT(11) NOT NULL,
+    `reportid` INT(11) NOT NULL,
+    `dom` longtext,
+    `screenshot` longtext,
+    `localstorage` longtext,
+    `sessionstorage` longtext,
+    `compressed` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -89,7 +101,7 @@ CREATE TABLE `settings` (
   `id` int(11) NOT NULL,
   `setting` varchar(500) NOT NULL,
   `value` text NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `settings`
@@ -102,7 +114,7 @@ INSERT INTO `settings` (`id`, `setting`, `value`) VALUES
 (4, 'timezone', 'Europe/Amsterdam'),
 (5, 'customjs', ''),
 (7, 'notepad', 'Welcome to ezXSS 4!'),
-(8, 'version', '4.1'),
+(8, 'version', '4.2'),
 (9, 'killswitch', ''),
 (10, 'collect_uri', '1'),
 (11, 'collect_ip', '1'),
@@ -122,7 +134,9 @@ INSERT INTO `settings` (`id`, `setting`, `value`) VALUES
 (25, 'alert-slack', '1'),
 (26, 'alert-discord', '1'),
 (27, 'logging', '0'),
-(28, 'persistent', '0');
+(28, 'persistent', '0'),
+(29, 'storescreenshot', '0'),
+(30, 'compress', '0');
 
 -- --------------------------------------------------------
 
@@ -152,9 +166,9 @@ CREATE TABLE `sessions` (
   `clientid` varchar(50) NOT NULL,
   `cookies` mediumtext,
   `dom` longtext,
-  `origin` varchar(500) DEFAULT NULL,
+  `origin` varchar(255) DEFAULT NULL,
   `referer` varchar(1000) DEFAULT NULL,
-  `payload` varchar(500) DEFAULT NULL,
+  `payload` varchar(255) DEFAULT NULL,
   `uri` varchar(1000) DEFAULT NULL,
   `user-agent` varchar(500) DEFAULT NULL,
   `ip` varchar(50) DEFAULT NULL,
@@ -162,6 +176,23 @@ CREATE TABLE `sessions` (
   `localstorage` longtext,
   `sessionstorage` longtext,
   `console` longtext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions_data`
+--
+
+CREATE TABLE `sessions_data` (
+    `id` INT(11) NOT NULL,
+    `sessionid` INT(11) NOT NULL,
+    `dom` longtext,
+    `localstorage` longtext,
+    `sessionstorage` longtext,
+    `console` longtext,
+    `compressed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -215,6 +246,12 @@ ALTER TABLE `reports`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `reports`
+--
+ALTER TABLE `reports_data`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `settings`
 --
 ALTER TABLE `settings`
@@ -230,6 +267,12 @@ ALTER TABLE `users`
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sessions_data`
+--
+ALTER TABLE `sessions_data`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -264,6 +307,11 @@ ALTER TABLE `payloads`
 ALTER TABLE `reports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 --
+-- AUTO_INCREMENT for table `reports_data`
+--
+ALTER TABLE `reports_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+--
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
@@ -280,6 +328,12 @@ ALTER TABLE `sessions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 --
+-- AUTO_INCREMENT for table `sessions_data`
+--
+ALTER TABLE `sessions_data`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+COMMIT;
+--
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
@@ -291,3 +345,19 @@ COMMIT;
 ALTER TABLE `console`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
+
+--
+-- INDEX for tables
+--
+
+ALTER TABLE reports ADD INDEX(archive);
+ALTER TABLE reports ADD INDEX(payload);
+ALTER TABLE reports ADD INDEX(id);
+ALTER TABLE reports ADD INDEX(shareid);
+ALTER TABLE reports_data ADD INDEX(reportid);
+
+ALTER TABLE sessions ADD INDEX(id);
+ALTER TABLE sessions ADD INDEX(payload);
+ALTER TABLE sessions ADD INDEX(clientid);
+ALTER TABLE sessions ADD INDEX(origin);
+ALTER TABLE sessions_data ADD INDEX(sessionid);

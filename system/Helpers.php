@@ -52,13 +52,26 @@ function baseDecode($data): string
 }
 
 /**
- * Rredirects to location
+ * Redirects to location
  * 
  * @param string $location The location
  * @return null
  */
-function redirect($location) 
+function redirect($location)
 {
     header('Location: ' . $location);
+    exit();
+}
+
+/**
+ * Returns plaintext error page
+ * 
+ * @param string $error The error message
+ * @return null
+ */
+function error($error, $status = 400)
+{
+    echo $error;
+    http_response_code($status);
     exit();
 }

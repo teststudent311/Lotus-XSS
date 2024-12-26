@@ -51,15 +51,15 @@ class Payload extends Controller
 
                 // Check if posted data is editing persistent mode
                 if ($this->getPostValue('persistent') !== null) {
-                    if($this->model('Setting')->get('persistent') !== '1' && $this->getPostValue('persistent-mode') !== null) {
+                    if ($this->model('Setting')->get('persistent') !== '1' && $this->getPostValue('persistent-mode') !== null) {
                         throw new Exception('Persistent mode is globally disabled by the ezXSS admin');
                     }
-                    $this->model('Payload')->setSingleValue($id, "persistent", ($this->getPostValue('persistent-mode') !== null) ? 1 : 0);
+                    $this->model('Payload')->setSingleValue($id, 'persistent', ($this->getPostValue('persistent-mode') !== null) ? 1 : 0);
                 }
 
                 // Check if posted data is editing custom js
                 if ($this->getPostValue('secondary-payload') !== null) {
-                    $this->model('Payload')->setSingleValue($id, "customjs", $this->getPostValue('customjs'));
+                    $this->model('Payload')->setSingleValue($id, 'customjs', $this->getPostValue('customjs'));
                 }
 
                 // Check if posted data is editing extracting pages
@@ -235,7 +235,7 @@ class Payload extends Controller
         }
 
         $newString = $payload['pages'] . '~' . $path;
-        $this->model('Payload')->setSingleValue($id, "pages", $newString);
+        $this->model('Payload')->setSingleValue($id, 'pages', $newString);
     }
 
     /**
@@ -251,12 +251,12 @@ class Payload extends Controller
         $payload = $this->model('Payload')->getById($id);
 
         // Validate domain string
-        if (!preg_match('/^(?!\-)(?:(?:[a-zA-Z\d][a-zA-Z\d\-]{0,61})?[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}$/', $domain)) {
+        if (!preg_match('/^(?:(?:(?!\*)[a-zA-Z\d][a-zA-Z\d\-*]{0,61})?[a-zA-Z\d]\.){0,1}(?!\d+)(?!.*\*\*)[a-zA-Z\d*]{1,63}(?:\.(?:(?:(?!\*)[a-zA-Z\d][a-zA-Z\d\-*]{0,61})?[a-zA-Z\d]\.){0,1}(?!\d+)(?!.*\*\*)[a-zA-Z\d*]{1,63})*$/', $domain)) {
             throw new Exception('This does not look like a valid domain');
         }
 
         $newString = $payload['blacklist'] . '~' . $domain;
-        $this->model('Payload')->setSingleValue($id, "blacklist", $newString);
+        $this->model('Payload')->setSingleValue($id, 'blacklist', $newString);
     }
 
     /**
@@ -272,11 +272,11 @@ class Payload extends Controller
         $payload = $this->model('Payload')->getById($id);
 
         // Validate domain string
-        if (!preg_match('/^(?!\-)(?:(?:[a-zA-Z\d][a-zA-Z\d\-]{0,61})?[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}$/', $domain)) {
+        if (!preg_match('/^(?:(?:(?!\*)[a-zA-Z\d][a-zA-Z\d\-*]{0,61})?[a-zA-Z\d]\.){0,1}(?!\d+)(?!.*\*\*)[a-zA-Z\d*]{1,63}(?:\.(?:(?:(?!\*)[a-zA-Z\d][a-zA-Z\d\-*]{0,61})?[a-zA-Z\d]\.){0,1}(?!\d+)(?!.*\*\*)[a-zA-Z\d*]{1,63})*$/', $domain)) {
             throw new Exception('This does not look like a valid domain');
         }
 
         $newString = $payload['whitelist'] . '~' . $domain;
-        $this->model('Payload')->setSingleValue($id, "whitelist", $newString);
+        $this->model('Payload')->setSingleValue($id, 'whitelist', $newString);
     }
 }

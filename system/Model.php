@@ -47,7 +47,7 @@ class Model
         $database->getById($this->table, $id);
 
         if ($database->countRows() === 0) {
-            throw new Exception("Not found");
+            throw new Exception('Not found');
         }
 
         $report = $database->fetch();
@@ -68,9 +68,28 @@ class Model
         $database->deleteById($this->table, $id);
 
         if (!$database->execute()) {
-            throw new Exception("Something unexpected went wrong");
+            throw new Exception('Something unexpected went wrong');
         }
 
         return true;
+    }
+
+     /**
+     * Get compress status
+     * 
+     * @return bool
+     */
+    public function getCompressStatus()
+    {
+        try {
+            $database = Database::openConnection();
+            $database->prepare("SELECT value FROM settings WHERE setting = 'compress' LIMIT 1");
+            $database->execute();
+            $status = $database->fetch();
+
+            return $status['value'] == 1 ? 1 : 0;
+        } catch (Exception $e) {
+            return 0;
+        }
     }
 }
