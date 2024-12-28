@@ -32,7 +32,7 @@ class Update extends Controller
 
         // Make sure the platform is not already up-to-date
         if ($version === version) {
-            throw new Exception('ezXSS is already up-to-date');
+            throw new Exception('LotusXSS is already up-to-date');
         }
 
         try {
@@ -66,7 +66,7 @@ class Update extends Controller
 
                 // Update the database from 3.x to 4.0
                 if (preg_match('/^3\./', $version)) {
-                    $this->ezXSS3migrate($version);
+                    this->LotusXSS3migrate($version);
                     $version = '4.0';
                     $this->model('Setting')->set('version', $version);
                 }
@@ -108,7 +108,7 @@ class Update extends Controller
                         $database = Database::openConnection();
                         $database->exec($sql);
                     } catch (Exception $e) {
-                        throw new Exception("Update has finished with errors. ezXSS was unable to add indexes to your database.\r\n" . $e->getMessage());
+                        throw new Exception("Update has finished with errors. LotusXSS was unable to add indexes to your database.\r\n" . $e->getMessage());
                     }
                 }
 
@@ -158,11 +158,11 @@ class Update extends Controller
     }
 
     /**
-     * Migrate ezXSS 3 database to ezXSS 4
+     * Migrate LotusXSS 3 database to LotusXSS 4
      * 
      * @return void
      */
-    private function ezXSS3migrate($version)
+    private function LotusXSS3migrate()
     {
         // Check if version is 3.9 or lower and update
         $updateQueries = ['3.0' => '3.5', '3.5' => '3.6', '3.6' => '3.9', '3.9' => '3.10'];
@@ -193,7 +193,7 @@ class Update extends Controller
         $this->model('Payload')->add($user['id'], host);
 
         // Add note
-        $this->model('Setting')->set('notepad', "Great! U have updated to ezXSS 4!\n\nA lot of things have changed, and some settings like your alerts and payloads needs to be re-done in other to make everything work correct again.\n\nPlease visit the Github wiki for help on github.com/ssl/ezXSS/wiki\n\n" . $notepad);
+        $this->model('Setting')->set('notepad', "Great! U have updated to LotusXSS 4!\n\nA lot of things have changed, and some settings like your alerts and payloads needs to be re-done in other to make everything work correct again.\n\nPlease visit the Github wiki for help on github.com/teststudent311/LotusXSS/wiki\n\n" . $notepad);
 
         // Update all oldskool 'collected pages' and NULL payloads
         $reports = $this->model('Report')->getAllInvalid();

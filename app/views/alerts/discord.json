@@ -1,8 +1,8 @@
 {
-    "username": "ezXSS",
+    "username": "LotusXSS",
     "embeds": [
         {
-            "title": "[ezXSS] XSS Report #{{id}}",
+            "title": "[LotusXSS] XSS Report #{{id}}",
             "type": "rich",
             "url": "https://{{domain}}/manage/reports/view/{{id}}",
             "timestamp": "{{timestamp}}",
@@ -41,7 +41,7 @@
                 "url": "{{screenshot}}"
             },
             "footer": {
-                "text": "github.com/ssl/ezXSS"
+                "text": "github.com/teststudent311/LotusXSS"
             }
         }
     ]

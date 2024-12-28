@@ -106,7 +106,7 @@ class Controller
 
         if (!$this->session->isValidCsrfToken($csrf)) {
             if (!httpmode && !ishttps) {
-                throw new Exception('ezXSS does not work without SSL');
+                throw new Exception("LotusXSS does not work without SSL");
             }
             throw new Exception('Invalid CSRF token');
         }
@@ -412,7 +412,7 @@ class Controller
             if (explode('?', path)[0] !== '/manage/update' && path !== '/manage/install') {
                 $version = $this->model('Setting')->get('version');
                 if ($version !== version) {
-                    throw new Exception('ezXSS is not up-to-date');
+                    throw new Exception('LotusXSS is not up-to-date');
                 }
             }
         } catch (Exception $e) {

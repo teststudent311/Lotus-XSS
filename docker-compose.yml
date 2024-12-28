@@ -1,8 +1,9 @@
 version: '3.7'
 
 services:
-  ezxssdb:
+  lotusxssdb:
     image: mysql:latest
+    
     restart: always
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
@@ -10,8 +11,8 @@ services:
       - MYSQL_USER=${dbUser}
       - MYSQL_PASSWORD=${dbPassword}
     volumes:
-      - "./ezxssdb:/var/lib/mysql"
-  ezxss:
+      - "./lotusxssdb:/var/lib/mysql"
+  lotusxss:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -24,7 +25,7 @@ services:
       - .:/var/www/html
     restart: always
     depends_on:
-      - ezxssdb
+      - lotusxssdb
     environment:
       - INSTALL_CERTIFICATE=${autoInstallCertificate}
       - DOMAIN=${domain}

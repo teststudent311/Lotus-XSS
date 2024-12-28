@@ -2,7 +2,7 @@
 try {
     // Check PHP version
     if (PHP_VERSION_ID < 70100) {
-        throw new Exception('PHP 7.1 or up is required to use ezXSS');
+        throw new Exception('PHP 7.1 or up is required to use LotusXSS');
     }
 
     // Load all required files

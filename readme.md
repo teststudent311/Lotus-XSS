@@ -1,67 +1,86 @@
-<p align="center">
-  <img src="https://i.imgur.com/oPtfbDG.png"><br>
-  ezXSS is an easy way for penetration testers and bug 
-  bounty hunters to test (blind) Cross Site Scripting.<br><br>
-  <img src="https://img.shields.io/github/release/ssl/ezXSS?style=flat">
-  <img src="https://img.shields.io/github/issues/ssl/ezXSS?style=flat">
-  <img src="https://img.shields.io/github/forks/ssl/ezXSS?style=flat">
-  <img src="https://img.shields.io/github/stars/ssl/ezXSS?style=flat">
-  <img src="https://img.shields.io/github/license/ssl/ezXSS?style=flat">
-</p>
-<hr>
-ezXSS is a tool that is designed to help find and exploit cross-site scripting (XSS) vulnerabilities. One of the key features of ezXSS is its ability to identify and exploit blind XSS vulnerabilities, which can be difficult to find using traditional methods.
-<br><br>
-Once an ezXSS payload is placed, the user must wait until it is triggered, at which point ezXSS will store and alert the user all the information of the vulnerable page. These reports can then be used to further identify and track important data. Payloads can even be updated to make the XSS persistent, allowing to track the infected user over all visited pages and open a reverse proxy.
+<# LotusXSS
 
-## Features
-* Easy to use dashboard with settings, statistics, payloads, view/share/search reports
-* :new: Persistent XSS sessions with reverse proxy aslong as the browser is active
-* Manage unlimited users with permissions to personal payloads & their reports
-* Instant alerts via mail, Telegram, Slack, Discord or custom callback URL
-* Custom extra javascript payloads
-* Custom payload links to distinguish insert points
-* Extract additional pages, block, whitelist and other filters
-* Secure your login with Two-factor (2FA)
-* The following information can be collected on a vulnerable page:
-    * The URL of the page
-    * IP Address
-    * Any page referer (or share referer)
-    * The User-Agent
-    * All Non-HTTP-Only Cookies
-    * All Locale Storage
-    * All Session Storage
-    * Full HTML DOM source of the page
-    * Page origin
-    * Time of execution
-    * Payload URL
-    * Screenshot of the page
-    * Extract additional defined pages
-* Triggers in all browsers, starting from Chrome 3+, IE 6+, Firefox 4+, Opera 10.5+, Safari 4+
-* much much more, and, its just ez :-)
+<div align="center">
+  <img src="https://i.ibb.co/GsC7ddZ/077f441c-b58d-4b9c-9d13-72281930d24e.jpg" alt="LotusXSS">
+</div>
 
-## Required
-* Server or shared web hosting with PHP 7.0 or up
-* Domain name (consider a short one or check out [shortboost](https://github.com/ssl/shortboost))
-* SSL Certificate to test on https websites (consider Cloudflare or Let's Encrypt for a free SSL)
+## 🌟 Features
 
-## Installation
-ezXSS is ez to install with Apache, NGINX or Docker
+- **User-Friendly Dashboard:** Settings, statistics, payloads, and report management.
+- **Persistent XSS Sessions:** Active as long as the browser is running, with reverse proxy support.
+- **Access Control:** Unlimited user support with custom permissions for payloads and reports.
+- **Real-Time Alerts:** Receive notifications via email, Telegram, Slack, Discord, or custom callbacks.
+- **Customization:** Tailor-made JavaScript payloads and unique payload links.
+- **Advanced Filtering:** Options to extract additional pages, apply block/whitelist filters.
+- **Two-Factor Authentication:** Enhance security for user logins.
+- **Comprehensive Data Collection:** Including URL, IP address, referer, User-Agent, cookies, storage data, full HTML DOM, page origin, execution time, payload URL, page screenshots, and more.
 
-visit the [wiki](https://github.com/ssl/ezXSS/wiki) for installation instructions.
+## 📋 Requirements
+
+- **Server Compatibility:** PHP 7.1 or higher.
+||||||| merged common ancestors
+
+=======
+<div align="center">
+  <img src="https://i.ibb.co/GsC7ddZ/077f441c-b58d-4b9c-9d13-72281930d24e.jpg" alt="LotusXSS">
+</div>
+>>>>>>> master
+
+## 🌟 Features
+>>>>>>> master
+
+- **User-Friendly Dashboard:** Settings, statistics, payloads, and report management.
+- **Persistent XSS Sessions:** Active as long as the browser is running, with reverse proxy support.
+- **Access Control:** Unlimited user support with custom permissions for payloads and reports.
+- **Real-Time Alerts:** Receive notifications via email, Telegram, Slack, Discord, or custom callbacks.
+- **Customization:** Tailor-made JavaScript payloads and unique payload links.
+- **Advanced Filtering:** Options to extract additional pages, apply block/whitelist filters.
+- **Two-Factor Authentication:** Enhance security for user logins.
+- **Comprehensive Data Collection:** Including URL, IP address, referer, User-Agent, cookies, storage data, full HTML DOM, page origin, execution time, payload URL, page screenshots, and more.
+
+## 📋 Requirements
+
+- **Server Compatibility:** PHP 7.1 or higher.
+- **Domain Name:** Short domain recommended ([shortboost](https://github.com/ssl/shortboost)).
+- **SSL Certificate:** For HTTPS websites (Cloudflare or Let's Encrypt for free SSL).
+
+## 🧪 Tested Environments
+>>>>>>> master
+
+- Kali Linux 2023.3
+- Ubuntu 22.04 
+- Ubuntu 23.10
+- Mint 21.2
+- Debian 12
 
 
-## Explore ezXSS hassle free
-Interested in using ezXSS but don't want to install it yet? Worry not! You can access and start using ezXSS with a free account on [ez.pe](https://ez.pe). Simply sign up and get started without any installation hassle.
+## ⚙️ Installation
 
-Additionally, if you'd like to explore and test the tool before committing, there is a demo environment with admin account available at [demo.ezxss.com/manage](https://demo.ezxss.com/manage).
+**Note:** The installation scripts are compatible with Linux distributions that use the `apt` package manager and `systemd` for system and service management.
 
-Please note that some features might be disabled or limited in both the free account on ez.pe and the demo environment. These limitations are in place to maintain the integrity and security of the platforms. However, you can still get a good grasp of the tool's capabilities and decide after to install it yourself.
+### Apache2 Setup
 
-## Sponsors
-Maintenance of this project is made possible by all the contributors and sponsors. 
-I've personally worked for over 8 years on this project, taking hundreds of hours from my time. Please kindly consider becoming a sponsor, so I can continue maintaining and improving ezXSS as well as creating and releasing new projects. Current sponsors:
+1. **Download:** `install_ap2.sh`.
+2. **Prepare:** `chmod +x install_ap2.sh`.
+3. **Execute:** `./install_ap2.sh`.
 
-<p align="center">
-<!-- sponsors --><a href="https://github.com/geeknik"><img src="https:&#x2F;&#x2F;github.com&#x2F;geeknik.png" width="60px" alt="geeknik" /></a>&nbsp;&nbsp;<a href="https://github.com/GlitchSecure"><img src="https:&#x2F;&#x2F;github.com&#x2F;GlitchSecure.png" width="60px" alt="GlitchSecure" /></a>&nbsp;&nbsp;<a href="https://github.com/vaadata"><img src="https:&#x2F;&#x2F;github.com&#x2F;vaadata.png" width="60px" alt="vaadata" /></a>&nbsp;&nbsp;<!-- sponsors -->
-<br><br><a href="https://github.com/sponsors/ssl">Become a sponsor</a>
-</p>
+### Nginx Setup
+
+1. **Download:** `install_ng.sh`.
+2. **Prepare:** `chmod +x install_ng.sh`.
+3. **Execute:** `./install_ng.sh`.
+
+### Docker Installation
+
+**Automatic:**
+1. **Download:** `install_dk.sh`.
+2. **Prepare:** `chmod +x install_dk.sh`.
+3. **Execute:** `./install_dk.sh`.
+
+**Manual:**
+- Clone the repository into `/var/www/html/`.
+- Rename `.env.example` to `.env` and set a secure password.
+- Update `msmtprc` for email alerts.
+- Run `docker-compose build && docker-compose up -d`.
+- Initialize account setup at `/manage/install`.
+>>>>>>> master

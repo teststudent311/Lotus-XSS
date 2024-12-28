@@ -13,7 +13,7 @@ class Session
             session_status() === PHP_SESSION_NONE &&
             explode('/', path)[1] === 'manage'
         ) {
-            session_name(!httpmode ? '__Host-EZXSS' : 'EZXSS');
+            session_name(!httpmode ? '__Host-LOTUSXSS' : 'LOTUSXSS');
             if (PHP_VERSION_ID < 70300) {
                 session_set_cookie_params(6000000, '/; samesite=Lax', null, !httpmode, true);
             } else {

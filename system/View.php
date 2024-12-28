@@ -362,7 +362,7 @@ class View
      */
     public function title()
     {
-        return 'ezXSS ~ ' . $this->title;
+        return 'LotusXSS ~ ' . $this->title;
     }
 
     /**
@@ -397,7 +397,7 @@ class View
     }
 
     /**
-     * Returns ezXSS version
+     * Returns LotusXSS version
      *
      * @return string
      */
