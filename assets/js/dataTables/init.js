@@ -1,12 +1,15 @@
 $(document).ready(function () {
+    $.fn.dataTable.ext.errMode = 'none';
+    
     new DataTable('#reports', {
         "ajax": {
             "url": "/manage/api/reports",
+            "contentType": "application/json",
             "type": "POST",
             "data": function (d) {
                 d.id = window.location.pathname.split('/').filter(Boolean).pop() === 'all' ? 0 : window.location.pathname.split('/').filter(Boolean).pop();
-                d.archive = (window.location.search.indexOf('archive=1') !== -1 ? '1' : '0');
-                d.csrf = csrf;
+                d.archive = (window.location.search.indexOf('archive=1') !== -1 ? 1 : 0);
+                return JSON.stringify(d);
             }
         },
         columns: [
@@ -40,10 +43,12 @@ $(document).ready(function () {
                     </div>`;
                 }
             },
-            { data: 'id', },
-            { data: 'uri', },
-            { data: 'ip', },
-            { data: 'payload', className: 'dt-body-right' }
+            { data: 'id' },
+            { data: 'uri' },
+            { data: 'ip' },
+            { data: 'browser' },
+            { data: 'payload' },
+            { data: 'last' }
         ],
         columnDefs: [{ targets: 2, className: "truncate" }],
         createdRow: function (row, data, dataIndex) {
@@ -57,10 +62,11 @@ $(document).ready(function () {
     var dataTablePersistent = new DataTable('#persistent', {
         "ajax": {
             "url": "/manage/api/sessions",
+            "contentType": "application/json",
             "type": "POST",
             "data": function (d) {
                 d.id = window.location.pathname.split('/').filter(Boolean).pop() === 'all' ? 0 : window.location.pathname.split('/').filter(Boolean).pop();
-                d.csrf = csrf;
+                return JSON.stringify(d);
             }
         },
         columns: [
@@ -80,10 +86,10 @@ $(document).ready(function () {
                 }
             },
             { data: 'browser', },
-            { data: 'ip', },
-            { data: 'shorturi', },
-            { data: 'payload', },
-            { data: 'requests', },
+            { data: 'ip' },
+            { data: 'shorturi' },
+            { data: 'payload' },
+            { data: 'requests' },
             { 
                 data: 'last',
                 render: function (data, type, row, meta) {
@@ -94,7 +100,7 @@ $(document).ready(function () {
                 }
             },
         ],
-        order: [[3, 'desc']],
+        order: [[6, 'desc']],
     });
 
     if (location.toString().split('/')[4] === "persistent") {
@@ -115,9 +121,10 @@ $(document).ready(function () {
     new DataTable('#logs', {
         "ajax": {
             "url": "/manage/api/logs",
+            "contentType": "application/json",
             "type": "POST",
             "data": function (d) {
-                d.csrf = csrf;
+                return JSON.stringify(d);
             }
         },
         columns: [
@@ -135,6 +142,40 @@ $(document).ready(function () {
             },
         ],
         order: [[3, 'desc']],
+    });
+
+    new DataTable('#users', {
+        "ajax": {
+            "url": "/manage/api/users",
+            "contentType": "application/json",
+            "type": "POST",
+            "data": function (d) {
+                return JSON.stringify(d);
+            }
+        },
+        columns: [
+            { data: 'id', },
+            { data: 'username', },
+            { data: 'rank', },
+            { data: 'payloads', },
+            { 
+                data: 'id',
+                orderable: false,
+                render: function (data, type, row) {
+                    return `<a href="/manage/users/edit/` + data + `">Edit</a>`;
+                }
+            },
+            { 
+                data: 'id',
+                orderable: false,
+                render: function (data, type, row) {
+                    return `<a href="/manage/users/delete/` + data + `">Delete</a>`;
+                }
+            },
+        ],
+        order: [[0, 'asc']],
+        scrollY: false,
+        scrollX: false,
     });
 
     $('#simple-table').DataTable({

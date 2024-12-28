@@ -41,7 +41,7 @@ class Users extends Controller
 
                 // Validate rank type
                 if (!isset($this->ranks[$rank])) {
-                    throw new Exception("Invalid rank");
+                    throw new Exception('Invalid rank');
                 }
 
                 // Try to create user
@@ -51,24 +51,6 @@ class Users extends Controller
                 $this->view->renderMessage($e->getMessage());
             }
         }
-
-        // Renders user list on page
-        $users = $this->model('User')->getAllUsers();
-        foreach ($users as &$user) {
-            // Translate rank id to readable name
-            $user['rank'] = $this->ranks[$user['rank']];
-
-            // Create list of all payloads of user
-            $payloads = $this->model('Payload')->getAllByUserId($user['id']);
-            $payloadString = $user['rank'] == 'Admin' ? '*, ' : '';
-            foreach ($payloads as $payload) {
-                $payloadString .= e($payload['payload']) . ', ';
-            }
-            $payloadString = $payloadString === '' ? $payloadString : substr($payloadString, 0, -2);
-            $payloadString = (strlen($payloadString) > 35) ? substr($payloadString, 0, 35) . '...' : $payloadString;
-            $user['payloads'] = $payloadString;
-        }
-        $this->view->renderDataset('user', $users);
 
         return $this->showContent();
     }
@@ -101,7 +83,7 @@ class Users extends Controller
                     // Check if posted data wants to change password
                     if ($password != '') {
                         if ($user['id'] == $this->session->data('id')) {
-                            throw new Exception("Can't edit your own users password here");
+                            throw new Exception('You cannot change your own password here');
                         }
                         $userModel->setPassword($user['id'], $password);
                     }
@@ -117,7 +99,7 @@ class Users extends Controller
                     }
                     $userModel->setRank($user['id'], $rank);
                     $this->log("Eddited user {$username}");
-                    if($rank == 0) {
+                    if ($rank == 0) {
                         $this->log("Banned user {$username}");
                     }
                 }
@@ -128,7 +110,7 @@ class Users extends Controller
 
                     // Validate payload url
                     if (strpos($payload, 'http://') === 0 || strpos($payload, 'https://') === 0 || substr($payload, 0, 1) === '/') {
-                        throw new Exception("Payload needs to be in format without http://");
+                        throw new Exception('Payload needs to be in format without http://');
                     }
 
                     $this->model('Payload')->add($user['id'], $payload);
@@ -169,7 +151,7 @@ class Users extends Controller
 
             // Prevent deleting own user
             if ($user['id'] == $this->session->data('id')) {
-                throw new Exception("Can't delete your own user");
+                throw new Exception('You cannot delete your own account');
             }
 
             $this->model('User')->deleteById($id);
@@ -193,7 +175,7 @@ class Users extends Controller
 
         // Check if payload is not default payload
         if (!+$id) {
-            throw new Exception("Can't delete this payload");
+            throw new Exception('You cannot delete this');
         }
 
         // Delete payload

@@ -1,6 +1,6 @@
 <?php
 
-class Persistent extends Controller 
+class Persistent extends Controller
 {
     /**
      * Summary of rows
@@ -40,7 +40,7 @@ class Persistent extends Controller
         // Retrieve and render all payloads of user for listing
         $payloads = [];
         foreach ($payloadList as $val) {
-            $name = !$val ? 'All reports' : $this->model('Payload')->getById($val)['payload'];
+            $name = !$val ? 'All payloads' : $this->model('Payload')->getById($val)['payload'];
             $payloads[] = ['id' => $val, 'name' => ucfirst($name), 'selected' => $val == $id ? 'selected' : ''];
         }
         $this->view->renderDataset('payload', $payloads);
@@ -55,7 +55,7 @@ class Persistent extends Controller
      * @throws Exception
      * @return string
      */
-    public function session($clientId) 
+    public function session($clientId)
     {
         $this->isLoggedInOrExit();
         $this->view->setTitle('Online');
@@ -71,7 +71,7 @@ class Persistent extends Controller
 
         $session = $this->model('Session')->getByClientId($clientId, $origin);
 
-        if($this->isPOST()) {
+        if ($this->isPOST()) {
             try {
                 $this->validateCsrfToken();
 
@@ -85,7 +85,7 @@ class Persistent extends Controller
 
                 // Check if posted data is killing persistent
                 if ($this->getPostValue('kill') !== null) {
-                    $this->model('Console')->add($clientId, $origin, "ez_stop()");
+                    $this->model('Console')->add($clientId, $origin, 'ez_stop()');
                     throw new Exception('Kill commando send to session');
                 }
 
@@ -146,7 +146,7 @@ class Persistent extends Controller
      * @throws Exception
      * @return string
      */
-    public function requests($clientId) 
+    public function requests($clientId)
     {
         $this->isLoggedInOrExit();
         $this->view->setTitle('Online');
@@ -197,7 +197,7 @@ class Persistent extends Controller
 
         $this->view->renderData('time', date('F j, Y, g:i a', $request['time']));
 
-        foreach ($this->rows as $value) {
+        foreach (array_slice($this->rows, 0, -2) as $value) {
             $this->view->renderData($value, $request[$value]);
         }
 

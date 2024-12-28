@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 The LotusXSS persistent proxy is a reverse proxy that can only be used in combination with a LotusXSS installation.
 After starting the proxy, users can insert the domain and port used into a persistent session in the LotusXSS management panel.
 This feature enables easy and secure testing of persistent XSS vulnerabilities on a target website.
-For additional information and support, please visit the LotusXSS wiki on GitHub at https://github.com/teststudent311/LotusXSS/wiki
+For additional information and support, please visit the LotusXSS wiki on GitHub at https://github.com/w4rphx/LotusXSS/wiki
 """
 
 print("""
@@ -37,7 +37,7 @@ load_dotenv()
 host = os.getenv("prHost")
 websockets_port = os.getenv("prWebPort")
 proxy_port = os.getenv("prProxyPort")
-use_login = True if os.getenv("prUseLogin") == '1' else False
+use_login = True if os.getenv("prUseLogin") == '1' or os.getenv("prUseLogin") == 'true' else False
 username = os.getenv("prUser")
 password = os.getenv("prPassword")
 cert_file = os.getenv("prCertFile")
@@ -147,7 +147,7 @@ async def handle_connection(reader, writer):
         if do_proxy:
             full_uri = parsed_uri.path + ('?' + parsed_uri.query if parsed_uri.query else '')
             if client_id in connected_clients:
-                message = json.dumps({"do": request_method, "request_uri": full_uri, "postData": request_body})
+                message = json.dumps({"method": request_method, "request_uri": full_uri, "postData": request_body})
                 await connected_clients[client_id].send(message)
 
                 client_response = None

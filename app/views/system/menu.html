@@ -3,8 +3,8 @@
     <div id="mobile-menu">
         <a href="#" class="left-nav-toggle">MENU</a>
     </div>
-    <div id="mobile-dropdown" style="display:none">
-        <ul class="nav lotusxss-nav" style="width:80%">
+    <div id="mobile-dropdown">
+        <ul class="nav lotusxss-nav">
             
             <li class="{currentPage[dashboard/my]}"><a href="/manage/dashboard/my">My Dashboard</a></li>
             <li class="{currentPage[account]}"><a href="/manage/account">Account</a></li>
@@ -21,7 +21,7 @@
             <li class="nav-category">Reports</li>
             <li class="{currentPage[reports*1]}"><a href="/manage/reports/all">All reports</a></li>
             <li class="{currentPage[reports*0]}"><a href="/manage/reports/all/?archive=1">Archived reports</a></li>
-            
+
             <li class="nav-category">Persistent</li>
             <li class="{currentPage[persistent*]}"><a href="/manage/persistent/all">All sessions</a></li>
         </ul>
@@ -29,7 +29,7 @@
 </div>
 <aside class="navigation">
     <nav>
-        <ul class="nav lotusxss-nav">
+        <ul class="nav lotusxss-nav nav-head">
             <li class="nav-info">
                 <i class="pe pe-7s-shield text-accent"></i>
                 <div class="m-t-xs"><span class="c-white">LotusXSS v{version[]}</span> github.com/teststudent311/LotusXSS</div>
@@ -51,7 +51,7 @@
             <li class="nav-category">Reports</li>
             <li class="{currentPage[reports*1]}"><a href="/manage/reports/all">All reports</a></li>
             <li class="{currentPage[reports*0]}"><a href="/manage/reports/all/?archive=1">Archived reports</a></li>
-            
+
             <li class="nav-category">Persistent</li>
             <li class="{currentPage[persistent*]}"><a href="/manage/persistent/all">All sessions</a></li>
 

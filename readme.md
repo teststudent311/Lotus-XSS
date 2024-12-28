@@ -29,6 +29,7 @@
 - Mint 21.2
 - Debian 12
 
+
 ## ⚙️ Installation
 
 **Note:** The installation scripts are compatible with Linux distributions that use the `apt` package manager and `systemd` for system and service management.

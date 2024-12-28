@@ -23,9 +23,10 @@ class Settings extends Controller
                     $timezone = $this->getPostValue('timezone');
                     $theme = $this->getPostValue('theme');
                     $filter = $this->getPostValue('filter');
-                    $dompart = $this->getPostValue('dompart');
-                    $logging = $this->getPostValue('loggingon');
-                    $this->applicationSettings($timezone, $theme, $filter, $dompart, $logging);
+                    $logging = $this->getPostValue('logging');
+                    $storescreenshot = $this->getPostValue('storescreenshot');
+                    $compress = $this->getPostValue('compress');
+                    $this->applicationSettings($timezone, $theme, $filter, $logging, $storescreenshot, $compress);
                 }
 
                 // Check if posted data is changing global payload settings
@@ -41,7 +42,9 @@ class Settings extends Controller
                 // Check if posted data is enabling killswitch
                 if ($this->getPostValue('killswitch') !== null) {
                     $password = $this->getPostValue('password');
-                    $this->killSwitch($password);
+                    if ($password !== '') {
+                        $this->killSwitch($password);
+                    }
                 }
 
                 // Check if posted data is changing alert method settings
@@ -55,8 +58,6 @@ class Settings extends Controller
                     $url = $this->getPostValue('callback_url');
                     $this->callbackAlertSettings($callbackOn, $url);
                 }
-
-                $this->log('Updated admin settings');
             } catch (Exception $e) {
                 $this->view->renderMessage($e->getMessage());
             }
@@ -78,7 +79,7 @@ class Settings extends Controller
         foreach ($files as $file) {
             $themeName = e(str_replace('.css', '', $file));
             $selected = $theme == $themeName ? 'selected' : '';
-            $themes[$themeName]['html'] = "<option $selected value=\"$themeName\">" . ucfirst($themeName) . "</option>";
+            $themes[$themeName]['html'] = "<option $selected value=\"$themeName\">" . ucfirst($themeName) . '</option>';
         }
         $this->view->renderDataset('theme', $themes, true);
 
@@ -87,7 +88,15 @@ class Settings extends Controller
         $filterSave = $settings->get('filter-save');
         $filterAlert = $settings->get('filter-alert');
 
-        $this->view->renderChecked('logging', $settings->get('logging') === '1');
+        $this->view->renderData('logging0', $settings->get('logging') == 0 ? 'selected' : '');
+        $this->view->renderData('logging1', $settings->get('logging') == 1 ? 'selected' : '');
+
+        $this->view->renderData('screenshot0', $settings->get('storescreenshot') == 0 ? 'selected' : '');
+        $this->view->renderData('screenshot1', $settings->get('storescreenshot') == 1 ? 'selected' : '');
+
+        $this->view->renderData('compress0', $settings->get('compress') == 0 ? 'selected' : '');
+        $this->view->renderData('compress1', $settings->get('compress') == 1 ? 'selected' : '');
+
         $this->view->renderChecked('persistent', $settings->get('persistent') === '1');
 
         // Renders data of correct selected filter
@@ -98,8 +107,21 @@ class Settings extends Controller
 
         // Renders checkboxes
         $renderSettings = [
-            'collect_uri', 'collect_ip', 'collect_referer', 'collect_user-agent', 'collect_cookies', 'collect_localstorage', 'collect_sessionstorage',
-            'collect_dom', 'collect_origin', 'collect_screenshot', 'alert-mail', 'alert-telegram', 'alert-slack', 'alert-discord', 'alert-callback'
+            'collect_uri',
+            'collect_ip',
+            'collect_referer',
+            'collect_user-agent',
+            'collect_cookies',
+            'collect_localstorage',
+            'collect_sessionstorage',
+            'collect_dom',
+            'collect_origin',
+            'collect_screenshot',
+            'alert-mail',
+            'alert-telegram',
+            'alert-slack',
+            'alert-discord',
+            'alert-callback'
         ];
         foreach ($renderSettings as $setting) {
             $this->view->renderChecked($setting, $settings->get($setting) == 1);
@@ -121,7 +143,6 @@ class Settings extends Controller
 
         // Render last data parts
         $this->view->renderData('customjs', $settings->get('customjs'));
-        $this->view->renderData('dompart', $settings->get('dompart'));
         $this->view->renderData('callbackURL', $settings->get('callback-url'));
 
         return $this->showContent();
@@ -133,12 +154,13 @@ class Settings extends Controller
      * @param string $timezone The timezone to set
      * @param string $theme The theme name
      * @param string $filter The filter option
-     * @param string $dompart The length of the dom part
      * @param string $logging Enable logging
+     * @param string $storescreenshot Method of screenshot storage
+     * @param string $compress Enable compressing
      * @throws Exception
      * @return void
      */
-    private function applicationSettings($timezone, $theme, $filter, $dompart, $logging)
+    private function applicationSettings($timezone, $theme, $filter, $logging, $storescreenshot, $compress)
     {
         // Validate timezone
         if (!in_array($timezone, timezone_identifiers_list(), true)) {
@@ -151,23 +173,19 @@ class Settings extends Controller
             throw new Exception('This theme is not installed');
         }
 
-        // Check if type is digit
-        if (!ctype_digit($dompart)) {
-            throw new Exception('The dom length needs to be digits');
-        }
-
         // Set the value based on the posted filter
         $filterSave = ($filter == 1 || $filter == 2) ? 1 : 0;
         $filterAlert = ($filter == 1 || $filter == 3) ? 1 : 0;
 
         // Save settings
-        $this->model('Setting')->set('dompart', $dompart);
         $this->model('Setting')->set('filter-save', $filterSave);
         $this->model('Setting')->set('filter-alert', $filterAlert);
         $this->model('Setting')->set('timezone', $timezone);
         $this->model('Setting')->set('theme', $theme);
-        $this->model('Setting')->set('logging', $logging !== null ? '1' : '0');
-        $this->log("Updated application settings");
+        $this->model('Setting')->set('logging', $logging === '1' ? '1' : '0');
+        $this->model('Setting')->set('storescreenshot', $storescreenshot === '1' ? '1' : '0');
+        $this->model('Setting')->set('compress', $compress === '1' ? '1' : '0');
+        $this->log('Updated admin application settings');
     }
 
     /**
@@ -187,11 +205,11 @@ class Settings extends Controller
             }
         }
 
-        $this->model('Setting')->set("customjs", $this->getPostValue('customjs'));
+        $this->model('Setting')->set('customjs', $this->getPostValue('customjs'));
 
         $persistent = $this->getPostValue('persistenton');
         $this->model('Setting')->set('persistent', $persistent !== null ? '1' : '0');
-        $this->log("Updated payload settings");
+        $this->log('Updated admin payload settings');
     }
 
     /**
@@ -246,18 +264,18 @@ class Settings extends Controller
             }
         }
         $alerts->set(0, 4, $discordOn !== null, $discordWebhook);
-        $this->log("Updated alert settings");
+        $this->log('Updated admin alert settings');
     }
 
     /**
      * Kills the LotusXSS platform
      * 
      * @param string $password
-     * @return string
      */
     private function killSwitch($password)
     {
-        $this->model('Setting')->set("killswitch", $password);
+        $this->model('Setting')->set('killswitch', $password);
+        $this->log('Enabled kill switch');
         $this->view->renderErrorPage("LotusXSS is now killed with password $password");
     }
 
@@ -269,16 +287,17 @@ class Settings extends Controller
     private function alertMethods()
     {
         $mailOn = $this->getPostValue('mailon') !== null ? '1' : '0';
-        $this->model('Setting')->set("alert-mail", $mailOn);
+        $this->model('Setting')->set('alert-mail', $mailOn);
 
         $telegramOn = $this->getPostValue('telegramon') !== null ? '1' : '0';
-        $this->model('Setting')->set("alert-telegram", $telegramOn);
+        $this->model('Setting')->set('alert-telegram', $telegramOn);
 
         $slackOn = $this->getPostValue('slackon') !== null ? '1' : '0';
-        $this->model('Setting')->set("alert-slack", $slackOn);
+        $this->model('Setting')->set('alert-slack', $slackOn);
 
         $discordOn = $this->getPostValue('discordon') !== null ? '1' : '0';
-        $this->model('Setting')->set("alert-discord", $discordOn);
+        $this->model('Setting')->set('alert-discord', $discordOn);
+        $this->log('Updated admin alert method settings');
     }
 
     /**
@@ -291,13 +310,13 @@ class Settings extends Controller
      */
     private function callbackAlertSettings($callbackOn, $url)
     {
-        $this->model('Setting')->set("alert-callback", $callbackOn !== null ? '1' : '0');
+        $this->model('Setting')->set('alert-callback', $callbackOn !== null ? '1' : '0');
 
         // Validate callback url
-        if (!empty($url) && (strpos($url, "http") !== 0 || filter_var($url, FILTER_VALIDATE_URL) === false)) {
+        if (!empty($url) && (strpos($url, 'http') !== 0 || filter_var($url, FILTER_VALIDATE_URL) === false)) {
             throw new Exception('Invalid callback URL');
         }
-        $this->model('Setting')->set("callback-url", $url);
-        $this->log("Updated callback settings");
+        $this->model('Setting')->set('callback-url', $url);
+        $this->log('Updated admin callback settings');
     }
 }

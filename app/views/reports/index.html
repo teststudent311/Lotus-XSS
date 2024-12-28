@@ -10,7 +10,8 @@
                         <div class="header-title">
                             <h3 class="m-b-xs">All reports</h3>
                             <small>The reports page allows you to view, search, share, and delete all of your payload's
-                                reports. Use it to track important data and to share reports with your stakeholders.</small>
+                                reports. Use it to track important data and to share reports with your
+                                stakeholders.</small>
                         </div>
                     </div>
                     <hr>
@@ -35,24 +36,25 @@
                         <div class="panel-heading">Information</div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table id="reports" class="table" style="white-space: nowrap;width:100%;">
+                                <table id="reports" class="table">
                                     <thead>
                                         <tr>
-                                            <th style="width:120px">
+                                            <th class="report-table-id">
                                                 <label class="reports-checkbox-label">
                                                     <input id="select-all" name="select-all" type="checkbox">
-                                                    <span class="reports-checkbox-custom rectangular"
-                                                        style="top:4px!important"></span>
+                                                    <span class="reports-checkbox-custom rectangular"></span>
                                                 </label>
                                             </th>
                                             <th style="width:3%">ID</th>
                                             <th>URL</th>
                                             <th>IP</th>
+                                            <th>Browser</th>
                                             <th>Payload</th>
+                                            <th>Time</th>
                                         </tr>
                                     </thead>
                                     <tbody id="reports-list">
-                                        
+
                                     </tbody>
                                 </table>
 
@@ -81,7 +83,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="control-label" for="domain">Direct share link</label>
+                        <label class="control-label" for="shareid">Direct share link</label>
                         <input class="form-control" id="shareid" type="text" value="">
                     </div>
                 </div>
@@ -93,6 +95,6 @@
     </div>
 </div>
 
-<script src="/assets/js/dataTables/jquery.dataTables.js"></script>
-<script src="/assets/js/dataTables/bootstrap.dataTables.js"></script>
-<script src="/assets/js/dataTables/init.js"></script>
+<script src="/assets/js/dataTables/jquery.dataTables.js?v={version[]}"></script>
+<script src="/assets/js/dataTables/bootstrap.dataTables.js?v={version[]}"></script>
+<script src="/assets/js/dataTables/init.js?v={version[]}"></script>
