@@ -101,7 +101,7 @@ class Payloads extends Controller
 
         // Check method
         if (!$this->isPOST()) {
-            return 'github.com/w4rphx/LotusXSS';
+            return 'github.com/ssl/ezXSS';
         }
 
         // Decode the JSON or form data
@@ -111,7 +111,7 @@ class Payloads extends Controller
             $data = (object)$_POST;
             
             if (empty($data) || !is_object($data)) {
-                return 'github.com/w4rphxssl/LotusXSS';
+                return 'github.com/ssl/ezXSS';
             }
         }
 
@@ -133,7 +133,7 @@ class Payloads extends Controller
         $data->{'user-agent'} = substr($data->{'user-agent'} ?? '', 0, 500);
 
         if(empty($data->payload)) {
-            return 'github.com/w4rphx/LotusXSS';
+            return 'github.com/ssl/ezXSS';
         }
 
         // Check black and whitelist
@@ -145,12 +145,12 @@ class Payloads extends Controller
         // Check for blacklisted domains
         foreach ($blacklistDomains as $blockedDomain) {
             if ($data->origin !== '' && $data->origin == $blockedDomain) {
-                return 'github.com/w4rphx/ezXSS';
+                return 'github.com/ssl/ezXSS';
             }
             if (strpos($blockedDomain, '*') !== false) {
                 $blockedDomain = str_replace('*', '(.*)', $blockedDomain);
                 if (preg_match('/^' . $blockedDomain . '$/', $data->origin)) {
-                    return 'github.com/w4rphx/LotusXSS';
+                    return 'github.com/ssl/ezXSS';
                 }
             }
         }
@@ -170,7 +170,7 @@ class Payloads extends Controller
                 }
             }
             if (!$foundWhitelist) {
-                return 'github.com/w4rphx/LotusXSS';
+                return 'github.com/ssl/ezXSS';
             }
         }
 
@@ -185,7 +185,7 @@ class Payloads extends Controller
             $searchId = $this->model('Report')->searchForDublicates($data->cookies ?? '', $data->origin, $data->referer, $data->uri, $data->{'user-agent'}, $data->dom ?? '', $data->ip);
             if ($searchId !== false) {
                 if ($this->model('Setting')->get('filter-save') == 0 && $this->model('Setting')->get('filter-alert') == 0) {
-                    return 'github.com/w4rphx/LotusXSS';
+                    return 'github.com/ssl/ezXSS';
                 } else {
                     $doubleReport = $searchId;
                 }
@@ -258,7 +258,7 @@ class Payloads extends Controller
             }
         }
 
-        return 'github.com/w4rphx/LotusXSS';
+        return 'github.com/ssl/ezXSS';
     }
 
     /**
@@ -487,7 +487,7 @@ class Payloads extends Controller
         // Headers
         $boundary = md5(uniqid(time(), true));
         $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'From: LotusXSS';
+        $headers[] = 'From: ezXSS';
         $headers[] = "Content-Type: multipart/mixed; boundary=\"ez$boundary\"";
 
         // Multipart to include alert template
@@ -500,7 +500,7 @@ class Payloads extends Controller
         if (!empty($data->screenshotBase)) {
             $multipart[] = "--ez$boundary";
             $multipart[] = 'Content-Type: image/png; file_name="screenshot.png"';
-            $multipart[] = 'Content-ID: <LotusXSS>';
+            $multipart[] = 'Content-ID: <ezXSS>';
             $multipart[] = 'Content-Transfer-Encoding: base64';
             $multipart[] = 'Content-Disposition: inline; filename="screenshot.png"';
             $multipart[] = "\n$attachment\n";
@@ -510,7 +510,7 @@ class Payloads extends Controller
         // Send the mail
         mail(
             $email,
-            '[LotusXSS] XSS on ' . $escapedData->uri ?? '',
+            '[ezXSS] XSS on ' . $escapedData->uri ?? '',
             implode("\n", str_replace(chr(0), '', $multipart)),
             implode("\n", $headers)
         );

@@ -101,18 +101,26 @@ class Payloads extends Controller
 
         // Check method
         if (!$this->isPOST()) {
-            return 'github.com/w4rphx/LotusXSS';
+            return 'github.com/teststudent311/LotusXSS';
         }
 
         // Decode the JSON or form data
         $data = json_decode(file_get_contents('php://input'), false);
 
+<<<<<<< HEAD
         if (empty($data) || !is_object($data)) {
             $data = (object)$_POST;
             
             if (empty($data) || !is_object($data)) {
-                return 'github.com/w4rphxssl/LotusXSS';
+                return 'github.com/ssl/ezXSS';
             }
+||||||| merged common ancestors
+        if(empty($data) || !is_object($data)) {
+            return 'github.com/ssl/ezXSS';
+=======
+        if(empty($data) || !is_object($data)) {
+            return 'github.com/teststudent311/LotusXSS';
+>>>>>>> master
         }
 
         // Set a default value for the screenshot
@@ -133,7 +141,7 @@ class Payloads extends Controller
         $data->{'user-agent'} = substr($data->{'user-agent'} ?? '', 0, 500);
 
         if(empty($data->payload)) {
-            return 'github.com/w4rphx/LotusXSS';
+            return 'github.com/ssl/ezXSS';
         }
 
         // Check black and whitelist
@@ -144,13 +152,21 @@ class Payloads extends Controller
 
         // Check for blacklisted domains
         foreach ($blacklistDomains as $blockedDomain) {
+<<<<<<< HEAD
             if ($data->origin !== '' && $data->origin == $blockedDomain) {
-                return 'github.com/w4rphx/ezXSS';
+                return 'github.com/ssl/ezXSS';
+||||||| merged common ancestors
+            if ($data->origin == $blockedDomain) {
+                return 'github.com/ssl/ezXSS';
+=======
+            if ($data->origin == $blockedDomain) {
+                return 'github.com/teststudent311/LotusXSS';
+>>>>>>> master
             }
             if (strpos($blockedDomain, '*') !== false) {
                 $blockedDomain = str_replace('*', '(.*)', $blockedDomain);
                 if (preg_match('/^' . $blockedDomain . '$/', $data->origin)) {
-                    return 'github.com/w4rphx/LotusXSS';
+                    return 'github.com/teststudent311/LotusXSS';
                 }
             }
         }
@@ -170,7 +186,7 @@ class Payloads extends Controller
                 }
             }
             if (!$foundWhitelist) {
-                return 'github.com/w4rphx/LotusXSS';
+                return 'github.com/teststudent311/LotusXSS';
             }
         }
 
@@ -185,7 +201,15 @@ class Payloads extends Controller
             $searchId = $this->model('Report')->searchForDublicates($data->cookies ?? '', $data->origin, $data->referer, $data->uri, $data->{'user-agent'}, $data->dom ?? '', $data->ip);
             if ($searchId !== false) {
                 if ($this->model('Setting')->get('filter-save') == 0 && $this->model('Setting')->get('filter-alert') == 0) {
-                    return 'github.com/w4rphx/LotusXSS';
+<<<<<<< HEAD
+                    return 'github.com/ssl/ezXSS';
+||||||| merged common ancestors
+                    echo 'no: ';
+                    return 'github.com/ssl/ezXSS';
+=======
+                    echo 'no: ';
+                    return 'github.com/teststudent311/LotusXSS';
+>>>>>>> master
                 } else {
                     $doubleReport = $searchId;
                 }
@@ -258,7 +282,7 @@ class Payloads extends Controller
             }
         }
 
-        return 'github.com/w4rphx/LotusXSS';
+        return 'github.com/teststudent311/LotusXSS';
     }
 
     /**
@@ -484,10 +508,16 @@ class Payloads extends Controller
         $alertTemplate = $this->view->getAlert('mail.html');
         $alertTemplate = $this->view->renderAlertData($alertTemplate, $escapedData);
 
+<<<<<<< HEAD
         // Headers
         $boundary = md5(uniqid(time(), true));
-        $headers[] = 'MIME-Version: 1.0';
+||||||| merged common ancestors
+        $headers[] = 'From: ezXSS';
+=======
         $headers[] = 'From: LotusXSS';
+>>>>>>> master
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'From: ezXSS';
         $headers[] = "Content-Type: multipart/mixed; boundary=\"ez$boundary\"";
 
         // Multipart to include alert template
@@ -500,7 +530,7 @@ class Payloads extends Controller
         if (!empty($data->screenshotBase)) {
             $multipart[] = "--ez$boundary";
             $multipart[] = 'Content-Type: image/png; file_name="screenshot.png"';
-            $multipart[] = 'Content-ID: <LotusXSS>';
+            $multipart[] = 'Content-ID: <ezXSS>';
             $multipart[] = 'Content-Transfer-Encoding: base64';
             $multipart[] = 'Content-Disposition: inline; filename="screenshot.png"';
             $multipart[] = "\n$attachment\n";
@@ -510,9 +540,19 @@ class Payloads extends Controller
         // Send the mail
         mail(
             $email,
-            '[LotusXSS] XSS on ' . $escapedData->uri ?? '',
+<<<<<<< HEAD
+            '[ezXSS] XSS on ' . $escapedData->uri ?? '',
             implode("\n", str_replace(chr(0), '', $multipart)),
             implode("\n", $headers)
+||||||| merged common ancestors
+            '[ezXSS] XSS on ' . $data->uri,
+            $alertTemplate,
+            implode("\r\n", $headers)
+=======
+            '[LotusXSS] XSS on ' . $data->uri,
+            $alertTemplate,
+            implode("\r\n", $headers)
+>>>>>>> master
         );
     }
 

