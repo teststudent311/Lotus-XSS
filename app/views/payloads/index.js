@@ -1,4 +1,4 @@
-// github.com/teststudent311/LotusXSS
+// github.com/w4rphx/LotusXSS
 // LotusXSS {{version}}
 
 function ez_n(e){return void 0 !==e?e:''}

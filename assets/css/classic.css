@@ -236,12 +236,12 @@ hr{margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #686d93}
 #mobile-menu{float:right}
 #mobile-menu .left-nav-toggle{padding-right:25px}
 .ezxss-nav.nav{padding-top:15px}
-.ezxss-nav.nav li > a,.lotuxss-nav.nav .nav-category{padding:8px 15px 8px 25px;margin:0 0}
-.ezxss-nav.nav .nav-info{border-bottom:#23284B 3px solid;padding:20px 25px 25px 25px;font-size:12px;background-color:#2B3157}
+.ezxss-nav.nav .nav-category,.lotuxss-nav.nav li>a{padding:8px 15px 8px 25px;margin:0 0}
+.ezxss-nav.nav .nav-info{border-bottom:#23284b 3px solid;padding:20px 25px 25px 25px;font-size:12px;background-color:#2b3157}
 .ezxss-nav.nav .nav-info i{font-size:34px}
-.ezxss-nav.nav li > a{color:#6A748E}
-.ezxss-nav.nav li a:hover,.lotusxss-nav.nav li a:focus{color:#c0c4c8;background:inherit}
-.ezxss-nav.nav .nav-category{color:#FFFFFF;margin-top:10px}
+.ezxss-nav.nav li>a{color:#6a748e}
+.ezxss-nav.nav li a:focus,.lotusxss-nav.nav li a:hover{color:#c0c4c8;background:inherit}
+.ezxss-nav.nav .nav-category{color:#fff;margin-top:10px}
 .panel{background-color:transparent;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;color:#5e648b;border-radius:3px}
 .panel .panel-body{padding:5px 15px 15px 15px}
 .panel.panel-filled .panel-body{padding-top:10px}

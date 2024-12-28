@@ -193,7 +193,7 @@ class Update extends Controller
         $this->model('Payload')->add($user['id'], host);
 
         // Add note
-        $this->model('Setting')->set('notepad', "Great! U have updated to LotusXSS 4!\n\nA lot of things have changed, and some settings like your alerts and payloads needs to be re-done in other to make everything work correct again.\n\nPlease visit the Github wiki for help on github.com/teststudent311/LotusXSS/wiki\n\n" . $notepad);
+        $this->model('Setting')->set('notepad', "Great! U have updated to LotusXSS 4!\n\nA lot of things have changed, and some settings like your alerts and payloads needs to be re-done in other to make everything work correct again.\n\nPlease visit the Github wiki for help on github.com/w4rphx/LotusXSS\n\n" . $notepad);
 
         // Update all oldskool 'collected pages' and NULL payloads
         $reports = $this->model('Report')->getAllInvalid();

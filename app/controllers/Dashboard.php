@@ -60,7 +60,7 @@ class Dashboard extends Controller
 
         // Check LotusXSS updates
         try {
-            $ch = curl_init('https://raw.githubusercontent.com/teststudent311/LotusXSS/master/changelog.txt');
+            $ch = curl_init('https://raw.githubusercontent.com/w4rphx/LotusXSS/master/changelog.txt');
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['User-Agent: LotusXSS']);

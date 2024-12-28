@@ -42,13 +42,9 @@ class Install extends Controller
                 }
 
                 // Create the database tables and rows
-<<<<<<< HEAD
                 $sql = file_get_contents(__DIR__ . '/../sql/4.2.sql');
-||||||| merged common ancestors
                 $sql = file_get_contents(__DIR__ . '/../../ezXSS4.sql');
-=======
                 $sql = file_get_contents(__DIR__ . '/../../LotusXSS4.sql');
->>>>>>> master
                 $database = Database::openConnection();
                 $database->exec($sql);
                 $database->exec('ALTER DATABASE `' . DB_NAME . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;');
