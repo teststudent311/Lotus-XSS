@@ -1,4 +1,4 @@
-<# LotusXSS
+# LotusXSS
 
 <div align="center">
   <img src="https://i.ibb.co/GsC7ddZ/077f441c-b58d-4b9c-9d13-72281930d24e.jpg" alt="LotusXSS">
