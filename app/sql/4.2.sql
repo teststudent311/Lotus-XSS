@@ -113,7 +113,7 @@ INSERT INTO `settings` (`id`, `setting`, `value`) VALUES
 (3, 'dompart', '500'),
 (4, 'timezone', 'Europe/Amsterdam'),
 (5, 'customjs', ''),
-(7, 'notepad', 'Welcome to ezXSS 4!'),
+(7, 'notepad', 'Welcome to LotusXSS 4!'),
 (8, 'version', '4.2'),
 (9, 'killswitch', ''),
 (10, 'collect_uri', '1'),

@@ -12,7 +12,7 @@ class Update extends Controller
         $this->view->setTitle('Update');
         $this->view->renderTemplate('system/update');
 
-        // Get database ezXSS version
+        // Get database LotusXSS version
         try {
             $version = $this->model('Setting')->get('version');
         } catch (Exception $e) {
@@ -53,7 +53,7 @@ class Update extends Controller
 
                 // Check if the version is 1.x
                 if (preg_match('/^1\./', $version)) {
-                    throw new Exception('ezXSS 1.x is deprecated. Please re-install on new empty database');
+                    throw new Exception('LotusXSS 1.x is deprecated. Please re-install on new empty database');
                 }
 
                 // Update the database from 2.x to 3.0

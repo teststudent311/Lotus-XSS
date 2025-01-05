@@ -43,7 +43,6 @@ class Install extends Controller
 
                 // Create the database tables and rows
                 $sql = file_get_contents(__DIR__ . '/../sql/4.2.sql');
-                $sql = file_get_contents(__DIR__ . '/../../ezXSS4.sql');
                 $sql = file_get_contents(__DIR__ . '/../../LotusXSS4.sql');
                 $database = Database::openConnection();
                 $database->exec($sql);
