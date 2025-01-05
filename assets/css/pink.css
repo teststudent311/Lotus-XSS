@@ -1,0 +1,26 @@
+.theme * {color: hsl(330, 70%, 75%) !important;background-color: hsl(330, 20%, 25%) !important;border-color: hsl(330, 20%, 30%) !important;}
+.theme img {visibility: visible !important;}
+.theme button {color: hsl(330, 70%, 85%) !important;background-color: hsl(330, 20%, 30%) !important;border-color: hsl(330, 20%, 35%) !important;}
+.theme textarea,
+.theme input {background-color: hsl(330, 15%, 25%) !important;border-color: hsl(330, 15%, 30%) !important;color: hsl(330, 60%, 85%) !important;}
+.theme pre,
+.theme code,
+.theme code span {background-color: hsl(330, 15%, 30%) !important;color: hsl(330, 60%, 80%) !important;}
+.theme a, .theme a * {color: hsl(330, 70%, 70%) !important;background-color: hsl(330, 20%, 25%) !important;}
+.theme a:hover, .theme a:hover * {color: hsl(330, 80%, 80%) !important;}
+.theme a:active, .theme a:active * {color: hsl(330, 80%, 80%) !important;}
+.content:before {background-color: hsl(330, 15%, 25%) !important;}
+.navigation:before {background-color: hsl(330, 15%, 25%) !important;border-right: 1px solid hsl(330, 20%, 30%) !important;}
+.nav-head {border-right: 1px solid hsl(330, 20%, 30%) !important;}
+.loader {border: 5px solid hsl(330, 15%, 30%) !important;border-top: 5px solid hsl(330, 70%, 75%) !important;}
+.checkbox-label input:checked ~ .checkbox-custom::after {border: solid hsl(330, 70%, 75%);border-width: 0 2px 2px 0;}
+.login {background-color: hsl(330, 15%, 30%) !important;color: hsl(330, 70%, 85%) !important;}
+.login .form {background-color: hsl(330, 15%, 30%) !important;}
+.login .form-group {background-color: hsl(330, 15%, 30%) !important;}
+.login .control-label {background-color: hsl(330, 15%, 30%) !important;color: hsl(330, 70%, 75%) !important;}
+.transparent {background-color: transparent !important;}
+body, html {background: hsl(330, 15%, 20%) !important;color: hsl(330, 60%, 80%) !important;}
+*::-webkit-scrollbar-track {background-color: hsl(330, 15%, 25%) !important;border-radius: 0px 3px 3px 0px;}
+*::-webkit-scrollbar {width: 6px;background-color: hsl(330, 15%, 30%) !important;}
+*::-webkit-scrollbar-thumb {background-color: hsl(330, 70%, 75%) !important;}
+::placeholder {color: hsl(330, 50%, 65%) !important;opacity: 1;}

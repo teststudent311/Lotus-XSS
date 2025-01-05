@@ -1,1 +1,1 @@
-INSERT INTO `settings` (`setting`, `value`) VALUES ("emailfrom", "ezXSS");
+INSERT INTO `settings` (`setting`, `value`) VALUES ("emailfrom", "LotusXSS");
