@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting ezXSS with Apache in the background..."
+echo "Starting LotusXSS with Apache in the background..."
 # Start Apache in the background to allow for certificate validation
 apache2ctl start || { echo "Failed to start Apache"; exit 1; }
 

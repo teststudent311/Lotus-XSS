@@ -16,10 +16,10 @@ if ($config === false) {
 // Debug modus will show and report any kind of errors, do not enable this unless you are debugging something
 define('debug', $config['debug'] ?? '' === 'true' || $config['debug'] ?? '' === '1' ? true : false);
 
-// Defines whenever httpmode is enabled, this allows ezXSS panel to be used without SSL
+// Defines whenever httpmode is enabled, this allows LotusXSS panel to be used without SSL
 define('httpmode', $config['httpmode'] ?? '' === 'true' || $config['httpmode'] ?? '' === '1' ? true : false);
 
-// Defines whenever sign up is enabled, do not enable this unless you are serving a public ezXSS installation - this allows anyone to register!
+// Defines whenever sign up is enabled, do not enable this unless you are serving a public LotusXSS installation - this allows anyone to register!
 define('signupEnabled', $config['signupEnabled'] ?? '' === 'true' || $config['signupEnabled'] ?? '' === '1' ? true : false);
 
 // Current LotusXSS version. Do not edit this

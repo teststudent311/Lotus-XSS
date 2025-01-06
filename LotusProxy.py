@@ -28,7 +28,7 @@ print("""
     \:\__\    \::/  /                     \::/  /       \::/  /       |:|  |        \::/  /       \::/  /   
      \/__/     \/__/                       \/__/         \/__/         \|__|         \/__/         \/__/    
 LotusProxy v1.0
-github.com/teststudent311/LotusXSS
+github.com/w4rphx/LotusXSS
 """)
 
 

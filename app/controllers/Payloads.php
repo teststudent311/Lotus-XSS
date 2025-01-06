@@ -145,7 +145,7 @@ class Payloads extends Controller
         // Check for blacklisted domains
         foreach ($blacklistDomains as $blockedDomain) {
             if ($data->origin !== '' && $data->origin == $blockedDomain) {
-                return 'github.com/w4rphx/ezXSS';
+                return 'github.com/w4rphx/LotusXSS';
             }
             if (strpos($blockedDomain, '*') !== false) {
                 $blockedDomain = str_replace('*', '(.*)', $blockedDomain);
@@ -475,7 +475,7 @@ class Payloads extends Controller
 
         if (!empty($data->screenshotBase)) {
             $attachment = chunk_split($escapedData->screenshotBase);
-            $escapedData->screenshot = '<img style="max-width:100%;" src="cid:ezXSS">';
+            $escapedData->screenshot = '<img style="max-width:100%;" src="cid:LotusXSS">';
         } else {
             $escapedData->screenshot = '';
         }
@@ -488,24 +488,24 @@ class Payloads extends Controller
         $boundary = md5(uniqid(time(), true));
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'From: LotusXSS';
-        $headers[] = "Content-Type: multipart/mixed; boundary=\"ez$boundary\"";
+        $headers[] = "Content-Type: multipart/mixed; boundary=\"lts$boundary\"";
 
         // Multipart to include alert template
-        $multipart[] = "--ez$boundary";
+        $multipart[] = "--lts$boundary";
         $multipart[] = 'Content-Type: text/html; charset=utf-8';
         $multipart[] = 'Content-Transfer-Encoding: Quot-Printed';
         $multipart[] = "\n$alertTemplate\n";
 
         // Multipart to include screenshot
         if (!empty($data->screenshotBase)) {
-            $multipart[] = "--ez$boundary";
+            $multipart[] = "--lts$boundary";
             $multipart[] = 'Content-Type: image/png; file_name="screenshot.png"';
             $multipart[] = 'Content-ID: <LotusXSS>';
             $multipart[] = 'Content-Transfer-Encoding: base64';
             $multipart[] = 'Content-Disposition: inline; filename="screenshot.png"';
             $multipart[] = "\n$attachment\n";
         }
-        $multipart[] = "--ez$boundary--";
+        $multipart[] = "--lts$boundary--";
 
         // Send the mail
         mail(

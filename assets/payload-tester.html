@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ezXSS Payload Tester</title>
+    <title>LotusXSS Payload Tester</title>
     <meta charset="utf-8">
     <style>.block{width:20px;height:20px;display:inline-block}.circle{width:20px;height:20px;display:inline-block;border-radius:10px}.title{background-color:rgb(43,49,87);color:rgb(94,100,139);padding:5px}</style>
 </head>
 <body>
-    <h1 class="title">ezXSS Payload Tester</h1>
-    <p>This URL fires the ezXSS payload</p>
+    <h1 class="title">LotusXSS Payload Tester</h1>
+    <p>This URL fires the LotusXSS payload</p>
     <div id="browser"></div>
 
     <a href="javascript:location.reload(true)">Reload page</a>
@@ -34,7 +34,7 @@
     <div class="circle" style="background-color:purple"></div>
     <div class="circle" style="background-color:pink"></div>
     <div class="circle" style="background-color:gray"></div>
-    <p>github.com/ssl/ezXSS</p>
+    <p>github.com/w4rphx/LotusXSS</p>
     <div id="colors"></div>
 
     <script>
@@ -101,9 +101,9 @@
     <hr>
     <script>
         try {
-            document.write('ezXSS payload initialized: <b>' + (typeof ez_nW === "function" ? 'yes' : 'no') + '</b><br>');
-            document.write('ezXSS screenshot initialized: <b>' + (typeof html2canvas === "function" ? 'yes' : 'no') + '</b><br>');
-            document.write('ezXSS persistent initialized: <b>' + (typeof ez_persist === "function" ? 'yes' : 'no') + '</b>');
+            document.write('LotusXSS payload initialized: <b>' + (typeof ez_nW === "function" ? 'yes' : 'no') + '</b><br>');
+            document.write('LotusXSS screenshot initialized: <b>' + (typeof html2canvas === "function" ? 'yes' : 'no') + '</b><br>');
+            document.write('LotusXSS persistent initialized: <b>' + (typeof ez_persist === "function" ? 'yes' : 'no') + '</b>');
         } catch (t) {}
     </script>
 
